@@ -1,3 +1,5 @@
+const { PermissionsBitField } = require('discord.js');
+
 module.exports = (bot, inter) => {
     if (inter.channel.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.ViewChannel))
     {
