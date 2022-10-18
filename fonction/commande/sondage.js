@@ -22,12 +22,12 @@ module.exports = {
     {
         let tab = [];
 
-        for (let i = 0; i < listeProposition.length; ++i)
+        for (const element of listeProposition)
         {
-            if (listeProposition[i] === null)
+            if (element === null)
                 break;
             else
-                tab.push(listeProposition[i]);
+                tab.push(element);
         }
 
         return tab;
@@ -160,6 +160,7 @@ function finSondage(interaction, message, question, footer, tag)
     let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, footer);
     interaction.channel.send({content: tag, embeds: [designFinSondage]});
     tabSondage.splice(trouverIndexSondage(message.id), 1);//Suppression du sondage
+    console.log(tabSondage);
 }
 
 function afficherResultat(message)

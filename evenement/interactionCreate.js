@@ -1,4 +1,6 @@
 module.exports = (bot, inter) => {
+    console.log(inter.channel.type);
+
     if (inter.isCommand() && inter.commandName in bot.commande)
         require("../interaction/sondage.js")(inter);
 
