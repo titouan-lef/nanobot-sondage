@@ -1,7 +1,7 @@
 const { PermissionsBitField } = require('discord.js');
 
 module.exports = (bot, inter) => {
-    if (inter.channel.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.ViewChannel))
+    if (inter.channel.permissionsFor(bot.guild.members.me).has(PermissionsBitField.Flags.ViewChannel))
     {
         if (inter.isCommand() && inter.commandName in bot.commande)
             require("../interaction/sondage.js")(inter);
