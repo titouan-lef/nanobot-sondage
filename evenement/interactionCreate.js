@@ -1,11 +1,11 @@
 module.exports = (bot, inter) => {
-    try
-    {       
+    if (inter.channel.permissionsFor(process.env.BOT_ID).has("VIEW_CHANNEL"))
+    {
         if (inter.isCommand() && inter.commandName in bot.commande)
             require("../interaction/sondage.js")(inter);
-    } catch (error) {
-        console.log("commande impossible. Channel privé ?");
     }
+    else
+        console.log("Le bot n'a pas accès au channel");
 
     if (inter.isButton())
         require("../interaction/bouton.js")(inter);
