@@ -1,5 +1,5 @@
 module.exports = (bot, inter) => {
-    if (inter.channel.permissionsFor(process.env.BOT_ID).has("VIEW_CHANNEL"))
+    if (inter.channel.permissionsFor(guild.members.me).has(PermissionsBitField.Flags.ViewChannel))
     {
         if (inter.isCommand() && inter.commandName in bot.commande)
             require("../interaction/sondage.js")(inter);
