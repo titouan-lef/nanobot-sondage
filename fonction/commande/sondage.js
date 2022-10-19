@@ -4,7 +4,9 @@ const alphabet = constante.getAlphabet();
 const objSondage = require("../../objet/sondage.js");
 const objParam = require("../../objet/param.js");
 
-let fonction = require("../utile.js");
+const fonction = require("../utile.js");
+
+let tabSondage = require("../../variable/globale.js");
 
 module.exports =
 {
