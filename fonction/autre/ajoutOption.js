@@ -35,7 +35,7 @@ module.exports =
             let tabUser = sondage.tabUtilisateur;
             tabUser.forEach(user => user.tabVote.push(objVote.nouveau(idVote, proposition)));
 
-            message.edit({content: texte, embeds: [designSondage], components: tabBouton});
+            message.editMessage({content: texte, embeds: [designSondage], components: tabBouton});
         }
         else
             console.log("le nombre maximum de proposition est déjà atteint");
