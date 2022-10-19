@@ -1,6 +1,7 @@
 const fonction = require("../fonction/utile.js");
 
 module.exports = (message) => {
+    console.log(message);
     if (message.type === "REPLY")
     {
         console.log("message trouvé");

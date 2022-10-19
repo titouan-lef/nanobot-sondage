@@ -20,6 +20,7 @@ bot.commande["sondage"] = commande["sondage"];
 
 bot.on("ready", () => require("./evenement/ready.js")(bot));
 bot.on("interactionCreate", (interaction) => require("./evenement/interactionCreate.js")(bot, interaction));
+bot.on("messageCreate", (message) => require("./evenement/messageCreate.js")(message));
 
 
 /**
