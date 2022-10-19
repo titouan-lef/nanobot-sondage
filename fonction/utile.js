@@ -81,7 +81,7 @@ module.exports =
 
     trouverIndexSondage: (idSondage) =>
     {
-        trouverIndexSondage(idSondage);
+        return trouverIndexSondage(idSondage);
     }
 };
 
