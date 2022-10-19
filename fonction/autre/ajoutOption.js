@@ -9,7 +9,7 @@ const fonction = require("../utile.js");
 
 module.exports =
 {
-    ajoutOption: (channel, idSondage, proposition) =>
+    ajoutOption: async (channel, idSondage, proposition) =>
     {
         let sondage = tabSondage[idSondage];
         let parametre = sondage.param;
@@ -35,7 +35,7 @@ module.exports =
             let tabUser = sondage.tabUtilisateur;
             tabUser.forEach(user => user.tabVote.push(objVote.nouveau(idVote, proposition)));
 
-            message.edit({content: texte, embeds: [designSondage], components: tabBouton});
+            await message.edit({content: texte, embeds: [designSondage], components: tabBouton});
         }
         else
             console.log("le nombre maximum de proposition est déjà atteint");
