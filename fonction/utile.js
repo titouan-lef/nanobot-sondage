@@ -1,3 +1,5 @@
+const {EmbedBuilder} = require("discord.js");
+
 let tabSondage = require("../variable/globale.js").getTabSondage();
 
 module.exports =

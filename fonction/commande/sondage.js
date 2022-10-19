@@ -1,4 +1,4 @@
-const {EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle} = require("discord.js");
+const {ButtonBuilder, ActionRowBuilder, ButtonStyle} = require("discord.js");
 
 const constante = require("../../variable/constante.js");
 const alphabet = constante.getAlphabet();
