@@ -11,15 +11,11 @@ module.exports =
 {
     ajoutOption: (channel, idSondage, proposition) =>
     {
-        console.log(tabSondage, idSondage);
         let sondage = tabSondage[idSondage];
-        console.log(sondage);
         let parametre = sondage.param;
         let propositionValide = parametre.propositionValide;
-        console.log(propositionValide);
-        console.log(alphabet.length);
 
-        if (propositionValide.lenght < alphabet.length)
+        if (propositionValide.length < alphabet.length)
         {
             propositionValide.push(proposition);
 
