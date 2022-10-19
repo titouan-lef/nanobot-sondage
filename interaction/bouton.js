@@ -6,6 +6,7 @@ module.exports = async (interaction) => {
     const constante = require("../variable/constante.js");
     const idBoutonSupprime = constante.getIdBoutonSupprime();
     const idBoutonNotif = constante.getIdBoutonNotif();
+    const idBoutonArreter = constante.getIdBoutonArreter();
 
     let idUser = interaction.user;
     let user;
@@ -30,29 +31,35 @@ module.exports = async (interaction) => {
         sondage.tabUtilisateur.push(user);
     }
 
-    if (interaction.customId === idBoutonNotif)
-        interaction.user.send(fonction.messageVote(user));
-    else
+    switch (interaction.customId)
     {
-        if (!sondage.choixMultiple || interaction.customId === idBoutonSupprime)
-        {
-            user.tabVote.forEach(vote => {
-                if (vote.id === interaction.customId)
-                    vote.nbVote = 1;
-                else
-                    vote.nbVote = 0;
-            });
-        }
-        else
-        {
-            user.tabVote.forEach(vote => {
-                if (vote.id === interaction.customId)
-                {
-                    vote.nbVote = 1;
-                    return;
-                }
-            });
-        }
+        case idBoutonNotif:
+            interaction.user.send(fonction.messageVote(user));
+            break;
+        case idBoutonArreter:
+            fonction.finSondage(interaction, interaction.message);
+            break;
+        default:
+            if (!sondage.choixMultiple || interaction.customId === idBoutonSupprime)
+            {
+                user.tabVote.forEach(vote => {
+                    if (vote.id === interaction.customId)
+                        vote.nbVote = 1;
+                    else
+                        vote.nbVote = 0;
+                });
+            }
+            else
+            {
+                user.tabVote.forEach(vote => {
+                    if (vote.id === interaction.customId)
+                    {
+                        vote.nbVote = 1;
+                        return;
+                    }
+                });
+            }
+            break;
     }
 
     await interaction.deferUpdate();

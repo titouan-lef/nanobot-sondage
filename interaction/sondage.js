@@ -42,16 +42,16 @@ module.exports = async (interaction) => {
     const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
 
     // Bouton pour voter
-    let tabBouton = fonction.creerTabBouton(listePropositionValide);
+    let tabBouton = fonction.creerTabBouton(listePropositionValide, temps);
 
     // Envoie du sondage dans le channel
     let envoi = await interaction.channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
     // Ajout du sondage au tableau
-    tabSondage.push(objSondage.nouveau(envoi.id, listePropositionValide, choixMultiple, montrer));
+    tabSondage.push(objSondage.nouveau(envoi.id, listePropositionValide, question, footer, tag, choixMultiple, montrer));
 
     // Paramétrage de la fin du sondage
-    fonction.initFinSondage(interaction, envoi, temps, mesure, question, footer, tag);
+    fonction.initFinSondage(interaction, envoi, temps);
 
     await interaction.reply({ content: 'Commande réussite', ephemeral: true });
 };

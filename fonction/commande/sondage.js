@@ -6,6 +6,8 @@ const idBoutonSupprime = constante.getIdBoutonSupprime();
 const nomBoutonSupprime = constante.getNomBoutonSupprime();
 const idBoutonNotif = constante.getIdBoutonNotif();
 const nomBoutonNotif = constante.getNomBoutonNotif();
+const idBoutonArreter = constante.getIdBoutonArreter();
+const nomBoutonArreter = constante.getNomBoutonArreter();
 
 let tabSondage = require("../../variable/globale.js").getTabSondage();
 
@@ -70,7 +72,7 @@ module.exports = {
             return "indéterminé";
         else
         {
-            if (temps === 0 || temps === 1)
+            if (temps === 1)
                 return temps + " " + mesure;
             else
                 return temps + " " + mesure + "s";
@@ -90,7 +92,7 @@ module.exports = {
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
     },
 
-    creerTabBouton: (listePropositionValide) =>
+    creerTabBouton: (listePropositionValide, temps) =>
     {
         let tab = [];
         let ligneBouton;
@@ -113,15 +115,30 @@ module.exports = {
         tab.push(ligneBouton);
 
         //BOUTON : Bouton pour supprimer son vote et un bouton pour recevoir une notif
-        tab.push(creerBoutonSuppEtNotif());
+        ligneBouton = creerBoutonSuppEtNotif();
+
+        //BOUTON : Bouton pour arreter le sondage
+        if (temps === 0)
+            ligneBouton.addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(idBoutonArreter)
+                        .setLabel(nomBoutonArreter)
+                        .setStyle(ButtonStyle.Danger));
+
+        tab.push(ligneBouton);
 
         return tab;
     },
 
-    initFinSondage: (interaction, message, temps, mesure, question, footer, tag) =>
+    initFinSondage: (interaction, message, temps, mesure) =>
     {
         if (temps !== 0)
-            setTimeout(() => finSondage(interaction, message, question, footer, tag), minuteur(mesure, temps));
+            setTimeout(() => finSondage(interaction, message), minuteur(mesure, temps));
+    },
+
+    finSondage: (interaction, message) =>
+    {
+        finSondage(interaction, message);
     }
 };
 
@@ -152,13 +169,14 @@ function creerBoutonSuppEtNotif()
                 .setStyle(ButtonStyle.Secondary));
 }
 
-function finSondage(interaction, message, question, footer, tag)
+function finSondage(interaction, message)
 {
     message.delete();
-    let titreFin = "Sondage : " + question + " (Terminé)";
+    let sondage = tabSondage[trouverIndexSondage(message.id)];
+    let titreFin = "Sondage : " + sondage.question + " (Terminé)";
     let description = afficherResultat(message);
-    let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, footer);
-    interaction.channel.send({content: tag, embeds: [designFinSondage]});
+    let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.footer);
+    interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
     tabSondage.splice(trouverIndexSondage(message.id), 1);//Suppression du sondage
     console.log(tabSondage);
 }

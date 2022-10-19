@@ -3,6 +3,8 @@ const idBoutonSupprime = "boutonSupprimerVote";
 const nomBoutonSupprime = "Supprimer son vote";
 const idBoutonNotif = "boutonNotif";
 const nomBoutonNotif = "Recevoir une notif";
+const idBoutonArreter = "boutonArreter";
+const nomBoutonArreter = "Arrêter le sondage";
 
 
 module.exports =
@@ -25,5 +27,13 @@ module.exports =
 
     getNomBoutonNotif: () => {
         return nomBoutonNotif;
+    },
+
+    getIdBoutonArreter: () => {
+        return idBoutonArreter;
+    },
+
+    getNomBoutonArreter: () => {
+        return nomBoutonArreter;
     }
 };

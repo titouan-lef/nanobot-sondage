@@ -1,10 +1,13 @@
 module.exports = {
-    nouveau: (idSondage, listePropositionValide, boolChoixMultiple, boolMontrer) =>
+    nouveau: (idSondage, listePropositionValide, questi, foot, roles, boolChoixMultiple, boolMontrer) =>
     {
         return {
             id : idSondage,
             tabUtilisateur : [],
             tabVote : creerTabVote(listePropositionValide),
+            question : questi,
+            footer : foot,
+            tag : roles,
             choixMultiple : boolChoixMultiple,
             montrer : boolMontrer
         };
