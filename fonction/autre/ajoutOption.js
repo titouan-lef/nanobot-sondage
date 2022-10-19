@@ -11,7 +11,7 @@ module.exports =
 {
     ajoutOption: (channel, idSondage, proposition) =>
     {
-        console.log(tabSondage);
+        console.log(tabSondage, idSondage);
         let sondage = tabSondage[idSondage];
         console.log(sondage);
         let parametre = sondage.param;
