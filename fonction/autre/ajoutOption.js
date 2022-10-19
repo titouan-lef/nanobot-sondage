@@ -19,6 +19,8 @@ module.exports =
         {
             propositionValide.push(proposition);
 
+            console.log(channel.messages);
+            console.log(idSondage);
             console.log(channel.messages.fetch(idSondage));
 
             let message = channel.messages.fetch(idSondage);
