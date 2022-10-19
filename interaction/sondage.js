@@ -51,7 +51,7 @@ module.exports = async (interaction) => {
     tabSondage.push(objSondage.nouveau(envoi.id, listePropositionValide, question, footer, tag, choixMultiple, montrer));
 
     // Paramétrage de la fin du sondage
-    fonction.initFinSondage(interaction, envoi, temps);
+    fonction.initFinSondage(interaction, envoi, temps, mesure);
 
     await interaction.reply({ content: 'Commande réussite', ephemeral: true });
 };
