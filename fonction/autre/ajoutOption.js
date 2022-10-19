@@ -18,8 +18,6 @@ module.exports =
         if (propositionValide.length < alphabet.length)
         {
             propositionValide.push(proposition);
-
-            let message = channel.messages.fetch(sondage.id);
             
             let texte = parametre.texte;
             let designSondage = parametre.designSondage;
@@ -35,7 +33,8 @@ module.exports =
             let tabUser = sondage.tabUtilisateur;
             tabUser.forEach(user => user.tabVote.push(objVote.nouveau(idVote, proposition)));
 
-            await message.edit({content: texte, embeds: [designSondage], components: tabBouton});
+            let message = await channel.messages.fetch(sondage.id);
+            message.edit({content: texte, embeds: [designSondage], components: tabBouton});
         }
         else
             console.log("le nombre maximum de proposition est déjà atteint");
