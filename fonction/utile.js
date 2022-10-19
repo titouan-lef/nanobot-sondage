@@ -1,4 +1,4 @@
-let tabSondage = require("../../variable/globale.js").getTabSondage();
+let tabSondage = require("../variable/globale.js").getTabSondage();
 
 module.exports =
 {
