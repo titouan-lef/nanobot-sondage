@@ -1,5 +1,7 @@
 const { PermissionsBitField } = require('discord.js');
 
+const fonction = require("../fonction/utile.js");
+
 module.exports = (bot, inter) => {
     if (inter.channel.permissionsFor(inter.guild.members.me).has(PermissionsBitField.Flags.ViewChannel))
     {
@@ -11,4 +13,12 @@ module.exports = (bot, inter) => {
 
     if (inter.isButton())
         require("../interaction/bouton.js")(inter);
+
+    if (inter.isMessageComponent() && inter.message === "REPLY")
+    {
+        let idOriginalMessage = inter.message.reference.messageId;
+        let idSondage = fonction.trouverIndexSondage(idOriginalMessage);
+        if (idSondage !== -1)
+            require("../fonction/autre/ajoutOption.js").ajoutOption(inter.channel, idSondage, inter.message.content);
+    }
 };

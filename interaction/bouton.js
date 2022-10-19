@@ -41,7 +41,7 @@ module.exports = async (interaction) => {
             utile.finSondage(interaction, interaction.message);
             break;
         default:
-            if (!sondage.choixMultiple || interaction.customId === idBoutonSupprime)
+            if (!sondage.param.choixMultiple || interaction.customId === idBoutonSupprime)
             {
                 user.tabVote.forEach(vote => {
                     if (vote.id === interaction.customId)

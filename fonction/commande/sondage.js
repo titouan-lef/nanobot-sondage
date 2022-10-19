@@ -1,175 +1,125 @@
-const {ButtonBuilder, ActionRowBuilder, ButtonStyle} = require("discord.js");
-
 const constante = require("../../variable/constante.js");
 const alphabet = constante.getAlphabet();
-const idBoutonSupprime = constante.getIdBoutonSupprime();
-const nomBoutonSupprime = constante.getNomBoutonSupprime();
-const idBoutonNotif = constante.getIdBoutonNotif();
-const nomBoutonNotif = constante.getNomBoutonNotif();
-const idBoutonArreter = constante.getIdBoutonArreter();
-const nomBoutonArreter = constante.getNomBoutonArreter();
+
+const objSondage = require("../../objet/sondage.js");
+const objParam = require("../../objet/param.js");
 
 let fonction = require("../utile.js");
 
-module.exports = {
-    
+module.exports =
+{
     getProposition: (interaction) =>
     {
         let tab = [];
         alphabet.forEach(lettre => tab.push(interaction.options.getString(lettre.toLowerCase())));
         return tab;
-    },    
-
-    getPropositionValide: (listeProposition) =>
-    {
-        let tab = [];
-
-        for (const element of listeProposition)
-        {
-            if (element === null)
-                break;
-            else
-                tab.push(element);
-        }
-
-        return tab;
     },
 
-    setDescription: (listePropositionValide) =>
+    creerSonsage: async (question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer) =>
     {
-        let description = "";
-
-        for (let i = 0; i < listePropositionValide.length; ++i)
-            description += getPropositionDescription(alphabet[i], listePropositionValide[i]);
-
-        return description;
-    },
-
-    creerTag: (role1, role2) =>
-    {
-        let message;
-        if (role1 !== null)
-        {
-            if (role2 !== null)
-                message = "<@&" + role1 + "> <@&" + role2 + ">";
-            else
-                message = "<@&" + role1 + ">";
-        }
-        return message;
-    },
-
-    creerAvertissement: (montrer) =>
-    { 
-        if (montrer)
-            return "Attention les votants seront révélés à la fin du sondage !";
-        else
-            return "";
-    },
-
-    finSondageDans: (temps, mesure) =>
-    {
-        if (temps === 0)
-            return "indéterminé";
+        // Paramétrage des variables liées au sondage
+        let listePropositionValide = getPropositionValide(listeProposition);
+        let descriptionSondage = fonction.setDescription(listePropositionValide);
+        
+        let tag = creerTag(role1, role2);
+        
+        let avertissement = creerAvertissement(montrer);
+        
+        let texte;
+        if (tag && avertissement)
+            texte = tag + "\n" + avertissement;
         else
         {
-            if (temps === 1)
-                return temps + " " + mesure;
+            if (tag)
+                texte = tag;
             else
-                return temps + " " + mesure + "s";
+                texte = avertissement;
         }
-    },
 
-    creerFooter: (choixMultiple) =>
-    {
-        if (choixMultiple)
-            return "Sondage à choix multiple";
-        else
-            return "Sondage à choix unique";
-    },
+        // Création du design du sondage
+        let titreSondage = "Sondage : " + question + " (fin dans : " + finSondageDans(temps, mesure) + ")";
+        let footer = creerFooter(choixMultiple);
+        const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
 
-    creerTabBouton: (listePropositionValide, temps) =>
-    {
-        let tab = [];
-        let ligneBouton;
-        for (let i = 0; i < listePropositionValide.length; ++i)
-        {
-            if (i % 5 === 0)
-            {
-                if (i !== 0)
-                    tab.push(ligneBouton);
-                
-                ligneBouton = new ActionRowBuilder();
-            }
-            
-            ligneBouton.addComponents(
-                new ButtonBuilder()
-                    .setCustomId(alphabet[i])
-                    .setLabel(alphabet[i])
-                    .setStyle(ButtonStyle.Primary));
-        }
-        tab.push(ligneBouton);
+        // Bouton pour voter
+        let tabBouton = fonction.creerTabBouton(listePropositionValide, temps);
 
-        //BOUTON : Bouton pour supprimer son vote et un bouton pour recevoir une notif
-        ligneBouton = creerBoutonSuppEtNotif();
+        // Envoie du sondage dans le channel
+        let envoi = await interaction.channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
-        //BOUTON : Bouton pour arreter le sondage
-        if (temps === 0)
-            ligneBouton.addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(idBoutonArreter)
-                        .setLabel(nomBoutonArreter)
-                        .setStyle(ButtonStyle.Danger));
+        // Paramètre du sondage
+        let paramSondage = objParam.nouveau(question, temps, mesure, choixMultiple, montrer, listePropositionValide, tag, texte, designSondage)
 
-        tab.push(ligneBouton);
+        // Ajout du sondage au tableau
+        let sondage = objSondage.nouveau(envoi.id, paramSondage);
+        tabSondage.push(sondage);
 
-        return tab;
-    },
+        // Paramétrage de la fin du sondage
+        initFinSondage(interaction, envoi, sondage.param.minuteur);
 
-    initFinSondage: (interaction, message, temps, mesure) =>
-    {
-        if (temps !== 0)
-            setTimeout(() => fonction.finSondage(interaction, message), minuteur(mesure, temps));
+        await interaction.reply({ content: 'Commande réussite', ephemeral: true });
     }
 };
 
-
-function getPropositionDescription(lettreProposition, proposition)
+function getPropositionValide(listeProposition)
 {
-    let description = "";
+    let tab = [];
 
-    if (lettreProposition !== "A")
-        description = "\n";
-    
-    return description + "`" + lettreProposition + ")` **" + proposition + "**";
-}
-
-function creerBoutonSuppEtNotif()
-{
-    return new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-                .setCustomId(idBoutonSupprime)
-                .setLabel(nomBoutonSupprime)
-                .setStyle(ButtonStyle.Danger))
-        .addComponents(
-            new ButtonBuilder()
-                .setCustomId(idBoutonNotif)
-                .setLabel(nomBoutonNotif)
-                .setStyle(ButtonStyle.Secondary));
-}
-
-function minuteur(mesure, temps)
-{
-    switch (mesure)
+    for (const element of listeProposition)
     {
-        case "jour":
-            return temps * 1000 * 60 * 60 * 24;
-        case "heure":
-            return temps * 1000 * 60 * 60;
-        case "minute":
-            return temps * 1000 * 60;
-        default:
-            console.log("erreur sur la durée du sondage");
-            return;
+        if (element === null)
+            break;
+        else
+            tab.push(element);
     }
+
+    return tab;
+}
+
+function creerTag(role1, role2)
+{
+    let message;
+    if (role1 !== null)
+    {
+        if (role2 !== null)
+            message = "<@&" + role1 + "> <@&" + role2 + ">";
+        else
+            message = "<@&" + role1 + ">";
+    }
+    return message;
+}
+
+function creerAvertissement(montrer)
+{ 
+    if (montrer)
+        return "Attention les votants seront révélés à la fin du sondage !";
+    else
+        return "";
+}
+
+function finSondageDans(temps, mesure)
+{
+    if (temps === 0)
+        return "indéterminé";
+    else
+    {
+        if (temps === 1)
+            return temps + " " + mesure;
+        else
+            return temps + " " + mesure + "s";
+    }
+}
+
+function creerFooter(choixMultiple)
+{
+    if (choixMultiple)
+        return "Sondage à choix multiple";
+    else
+        return "Sondage à choix unique";
+}
+
+function initFinSondage(interaction, message, minuteur)
+{
+    if (minuteur !== 0)
+        setTimeout(() => fonction.finSondage(interaction, message), minuteur);
 }

@@ -1,17 +1,74 @@
-const {EmbedBuilder} = require("discord.js");
+const {EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle} = require("discord.js");
 
 let tabSondage = require("../variable/globale.js").getTabSondage();
 
+const constante = require("../variable/constante.js");
+const alphabet = constante.getAlphabet();
+const idBoutonSupprime = constante.getIdBoutonSupprime();
+const nomBoutonSupprime = constante.getNomBoutonSupprime();
+const idBoutonNotif = constante.getIdBoutonNotif();
+const nomBoutonNotif = constante.getNomBoutonNotif();
+const idBoutonArreter = constante.getIdBoutonArreter();
+const nomBoutonArreter = constante.getNomBoutonArreter();
+
 module.exports =
 {
+    setDescription: (listePropositionValide) =>
+    {
+        let description = "";
+
+        for (let i = 0; i < listePropositionValide.length; ++i)
+            description += getPropositionDescription(alphabet[i], listePropositionValide[i]);
+
+        return description;
+    },
+
+    creerTabBouton: (listePropositionValide, temps) =>
+    {
+        let tab = [];
+        let ligneBouton;
+        for (let i = 0; i < listePropositionValide.length; ++i)
+        {
+            if (i % 5 === 0)
+            {
+                if (i !== 0)
+                    tab.push(ligneBouton);
+                
+                ligneBouton = new ActionRowBuilder();
+            }
+            
+            ligneBouton.addComponents(
+                new ButtonBuilder()
+                    .setCustomId(alphabet[i])
+                    .setLabel(alphabet[i])
+                    .setStyle(ButtonStyle.Primary));
+        }
+        tab.push(ligneBouton);
+    
+        //BOUTON : Bouton pour supprimer son vote et un bouton pour recevoir une notif
+        ligneBouton = creerBoutonSuppEtNotif();
+    
+        //BOUTON : Bouton pour arreter le sondage
+        if (temps === 0)
+            ligneBouton.addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(idBoutonArreter)
+                        .setLabel(nomBoutonArreter)
+                        .setStyle(ButtonStyle.Success));
+    
+        tab.push(ligneBouton);
+    
+        return tab;
+    },
+
     finSondage: (interaction, message) =>
     {
         message.delete();
         let sondage = tabSondage[trouverIndexSondage(message.id)];
-        let titreFin = "Sondage : " + sondage.question + " (Terminé)";
+        let titreFin = "Sondage : " + sondage.param.question + " (Terminé)";
         let description = afficherResultat(message);
-        let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.footer);
-        interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
+        let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.param.designSondage.footer);
+        interaction.channel.send({content: sondage.param.tag, embeds: [designFinSondage]});
         tabSondage.splice(trouverIndexSondage(message.id), 1);//Suppression du sondage
         console.log(tabSondage);
     },
@@ -19,6 +76,11 @@ module.exports =
     creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>
     {
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
+    },
+
+    trouverIndexSondage: (idSondage) =>
+    {
+        trouverIndexSondage(idSondage);
     }
 };
 
@@ -47,7 +109,7 @@ function afficherResultat(message)
 
         description += "`" + vote.id + ")` **" + vote.proposition + "** : " + vote.nbVote + stringVote;
 
-        if (sondage.montrer && vote.votant !== "")
+        if (sondage.param.montrer && vote.votant !== "")
             description += " (" + vote.votant + ")";
     });
 
@@ -62,6 +124,7 @@ function trouverIndexSondage(idSondage)
             return i;
     }
     console.log("sondage " + idSondage + " introuvable");
+    return -1;
 }
 
 function calculerNbVote(sondage)
@@ -111,6 +174,31 @@ function triInsertion(tabVote)
         //Insère la valeur temporaire à la position correcte dans la partie triée.
         tabVote[j+1] = tmp
     }
+}
+
+function getPropositionDescription(lettreProposition, proposition)
+{
+    let description = "";
+
+    if (lettreProposition !== "A")
+        description = "\n";
+    
+    return description + "`" + lettreProposition + ")` **" + proposition + "**";
+}
+
+function creerBoutonSuppEtNotif()
+{
+    return new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId(idBoutonSupprime)
+                .setLabel(nomBoutonSupprime)
+                .setStyle(ButtonStyle.Danger))
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId(idBoutonNotif)
+                .setLabel(nomBoutonNotif)
+                .setStyle(ButtonStyle.Secondary));
 }
 
 function creerDesignSondage(couleur, titreSondage, descriptionSondage, footer)
