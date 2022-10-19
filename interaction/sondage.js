@@ -1,7 +1,7 @@
-module.exports = (interaction) =>
-{   
-    const fonction = require("../fonction/commande/sondage.js");
+const fonction = require("../fonction/commande/sondage.js");
 
+module.exports = (interaction) =>
+{
     // Récupération des variables
     const question = interaction.options.getString("question");
 
@@ -16,5 +16,5 @@ module.exports = (interaction) =>
 
     const montrer = interaction.options.getBoolean("montrer");
     
-    fonction.creerSonsage(question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer);
+    fonction.creerSonsage(interaction ,question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer);
 };

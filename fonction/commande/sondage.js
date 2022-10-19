@@ -15,7 +15,7 @@ module.exports =
         return tab;
     },
 
-    creerSonsage: async (question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer) =>
+    creerSonsage: async (interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer) =>
     {
         // Paramétrage des variables liées au sondage
         let listePropositionValide = getPropositionValide(listeProposition);
