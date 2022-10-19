@@ -6,7 +6,7 @@ const objParam = require("../../objet/param.js");
 
 const fonction = require("../utile.js");
 
-let tabSondage = require("../../variable/globale.js");
+let tabSondage = require("../../variable/globale.js").getTabSondage();
 
 module.exports =
 {
