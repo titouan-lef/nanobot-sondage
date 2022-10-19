@@ -14,9 +14,9 @@ module.exports = (bot, inter) => {
     if (inter.isButton())
         require("../interaction/bouton.js")(inter);
 
-    if (inter.isMessageComponent())
+    /*if (inter.isMessageComponent())
     {
-        console.log("c'est un message");
+        console.log("c'est un message");*/
         if (inter.message === "REPLY")
         {
             console.log("message trouvé");
@@ -29,5 +29,5 @@ module.exports = (bot, inter) => {
                 console.log("ça marche");
             }
         }
-    }
+    //}
 };
