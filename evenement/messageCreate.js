@@ -2,7 +2,7 @@ const fonction = require("../fonction/utile.js");
 
 module.exports = (message) => {
     console.log(message);
-    if (message.type === "REPLY")
+    if (message.type === 19)
     {
         console.log("message trouvé");
         let idOriginalMessage = message.reference.messageId;
