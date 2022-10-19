@@ -12,6 +12,11 @@ module.exports =
         interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
         tabSondage.splice(trouverIndexSondage(message.id), 1);//Suppression du sondage
         console.log(tabSondage);
+    },
+
+    creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>
+    {
+        return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
     }
 };
 

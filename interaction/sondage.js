@@ -1,6 +1,7 @@
 module.exports = async (interaction) => {   
     let tabSondage = require("../variable/globale.js").getTabSondage();
     const fonction = require("../fonction/commande/sondage.js");
+    const utile = require("../fonction/utile.js");
     const objSondage = require("../objet/sondage.js");
 
     // Récupération des variables
@@ -39,7 +40,7 @@ module.exports = async (interaction) => {
     // Création du design du sondage
     let titreSondage = "Sondage : " + question + " (fin dans : " + fonction.finSondageDans(temps, mesure) + ")";
     let footer = fonction.creerFooter(choixMultiple);
-    const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
+    const designSondage = utile.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
 
     // Bouton pour voter
     let tabBouton = fonction.creerTabBouton(listePropositionValide, temps);

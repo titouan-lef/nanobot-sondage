@@ -87,11 +87,6 @@ module.exports = {
             return "Sondage à choix unique";
     },
 
-    creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>
-    {
-        return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
-    },
-
     creerTabBouton: (listePropositionValide, temps) =>
     {
         let tab = [];
