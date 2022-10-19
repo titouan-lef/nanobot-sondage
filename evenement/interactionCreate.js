@@ -16,9 +16,14 @@ module.exports = (bot, inter) => {
 
     if (inter.isMessageComponent() && inter.message === "REPLY")
     {
+        console.log("message trouvé");
         let idOriginalMessage = inter.message.reference.messageId;
         let idSondage = fonction.trouverIndexSondage(idOriginalMessage);
         if (idSondage !== -1)
+        {
+            console.log("sondage trouvé");
             require("../fonction/autre/ajoutOption.js").ajoutOption(inter.channel, idSondage, inter.message.content);
+            console.log("ça marche");
+        }
     }
 };
