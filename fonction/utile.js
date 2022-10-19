@@ -63,11 +63,10 @@ module.exports =
 
     finSondage: (interaction, message) =>
     {
-        console.log("1", sondage.param.designSondage);
         message.delete();
-        console.log("2", sondage.param.designSondage);
         let i = trouverIndexSondage(message.id);
         let sondage = tabSondage[i];
+        console.log("1", sondage.param.designSondage);
         let titreFin = "Sondage : " + sondage.param.question + " (Terminé)";
         let description = afficherResultat(message);
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.param.designSondage.footer);
