@@ -20,10 +20,9 @@ module.exports =
             propositionValide.push(proposition);
 
             console.log(channel.messages);
-            console.log(idSondage);
-            console.log(channel.messages.fetch(idSondage));
+            console.log(channel.messages.fetch(sondage.id));
 
-            let message = channel.messages.fetch(idSondage);
+            let message = channel.messages.fetch(sondage.id);
 
             console.log(message);
             
@@ -41,7 +40,7 @@ module.exports =
             let tabUser = sondage.tabUtilisateur;
             tabUser.forEach(user => user.tabVote.push(objVote.nouveau(idVote, proposition)));
 
-            //message.editMessage({content: texte, embeds: [designSondage], components: tabBouton});
+            message.editMessage({content: texte, embeds: [designSondage], components: tabBouton});
         }
         else
             console.log("le nombre maximum de proposition est déjà atteint");
