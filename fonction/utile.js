@@ -66,7 +66,6 @@ module.exports =
         message.delete();
         let i = trouverIndexSondage(message.id);
         let sondage = tabSondage[i];
-        console.log("1", sondage.param.designSondage);
         let titreFin = "Sondage : " + sondage.param.question + " (Terminé)";
         let description = afficherResultat(message);
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.param.designSondage.data.footer.text);
