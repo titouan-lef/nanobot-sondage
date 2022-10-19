@@ -67,7 +67,7 @@ module.exports =
         let sondage = tabSondage[trouverIndexSondage(message.id)];
         let titreFin = "Sondage : " + sondage.param.question + " (Terminé)";
         let description = afficherResultat(message);
-        let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.param.designSondage.footer);
+        let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, "test"/*sondage.param.designSondage.footer*/);
         interaction.channel.send({content: sondage.param.tag, embeds: [designFinSondage]});
         tabSondage.splice(trouverIndexSondage(message.id), 1);//Suppression du sondage
         console.log(tabSondage);
