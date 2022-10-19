@@ -1,6 +1,7 @@
 module.exports = async (interaction) => { 
     let tabSondage = require("../variable/globale.js").getTabSondage();
     const fonction = require("../fonction/element/bouton.js");
+    const utile = require("../fonction/utile.js");
     const objUser = require("../objet/utilisateur.js");
 
     const constante = require("../variable/constante.js");
@@ -37,7 +38,7 @@ module.exports = async (interaction) => {
             interaction.user.send(fonction.messageVote(user));
             break;
         case idBoutonArreter:
-            fonction.finSondage(interaction, interaction.message);
+            utile.finSondage(interaction, interaction.message);
             break;
         default:
             if (!sondage.choixMultiple || interaction.customId === idBoutonSupprime)
