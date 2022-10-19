@@ -16,6 +16,7 @@ module.exports =
         console.log(sondage);
         let parametre = sondage.param;
         let propositionValide = parametre.propositionValide;
+        console.log(propositionValide);
 
         if (propositionValide.lenght < alphabet.length)
         {
