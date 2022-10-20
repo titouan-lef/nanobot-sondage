@@ -51,7 +51,7 @@ module.exports =
         let envoi = await interaction.channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
         // Paramètre du sondage
-        let paramSondage = objParam.nouveau(question, temps, mesure, choixMultiple, montrer, ajout, rappel, listePropositionValide, minuteur, tag, texte, designSondage)
+        let paramSondage = objParam.nouveau(question, choixMultiple, montrer, ajout, rappel, listePropositionValide, minuteur, tag, texte, designSondage)
 
         // Ajout du sondage au tableau
         let sondage = objSondage.nouveau(envoi.id, paramSondage);
