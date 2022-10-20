@@ -61,10 +61,10 @@ module.exports =
         return tab;
     },
 
-    finSondage: (interaction, message) =>
+    finSondage: async (interaction, message) =>
     {
         try {
-            message.delete();
+            await message.delete();
         } catch (error) {
             console.log("Le sondage a été supprimé par quelqu'un");
         }
