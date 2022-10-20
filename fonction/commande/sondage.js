@@ -24,7 +24,7 @@ module.exports =
         let listePropositionValide = getPropositionValide(listeProposition);
         let descriptionSondage = fonction.setDescription(listePropositionValide);
 
-        let minuteur = minuteur(mesure, temps);
+        let minuteur = creerMinuteur(mesure, temps);
         if (minuteur < xHeure)
             rappel = false;
         
@@ -79,7 +79,7 @@ function getPropositionValide(listeProposition)
     return tab;
 }
 
-function minuteur(mesure, temps)
+function creerMinuteur(mesure, temps)
 {
     switch (mesure)
     {
