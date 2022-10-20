@@ -1,33 +1,16 @@
 module.exports = {
-    nouveau: (question, temps, mesure, boolChoixMultiple, boolMontrer, boolAjout, listePropositionValide, roles, texte, designSondage) =>
+    nouveau: (question, boolChoixMultiple, boolMontrer, boolAjout, boolRappel, listePropositionValide, vMinuteur, roles, texte, designSondage) =>
     {
-        let VMinuteur = minuteur(mesure, temps);
-
         return {question : question,
             choixMultiple : boolChoixMultiple,
             montrer : boolMontrer,
             ajout : boolAjout,
+            rappel : boolRappel,
             propositionValide : listePropositionValide,
             tag : roles,
             texte : texte,
             designSondage : designSondage,
-            minuteur : VMinuteur
+            minuteur : vMinuteur
         };
     }
 };
-
-function minuteur(mesure, temps)
-{
-    switch (mesure)
-    {
-        case "jour":
-            return temps * 1000 * 60 * 60 * 24;
-        case "heure":
-            return temps * 1000 * 60 * 60;
-        case "minute":
-            return temps * 1000 * 60;
-        default:
-            console.log("erreur sur la durée du sondage");
-            return;
-    }
-}

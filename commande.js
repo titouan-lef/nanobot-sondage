@@ -33,7 +33,8 @@ module.exports = {
         
         .addBooleanOption(option => option.setName("montrer").setDescription("Montrer qui a voté pour quoi à la fin ?").setRequired(false))
 
-        .addBooleanOption(option => option.setName("ajout").setDescription("Possibilité d'ajouter des options pendant le sondage ?").setRequired(false));
+        .addBooleanOption(option => option.setName("ajout").setDescription("Possibilité d'ajouter des options pendant le sondage ?").setRequired(false))
+        .addBooleanOption(option => option.setName("rappel").setDescription("Envoi un rappel 1h avant la fin du sondage ?").setRequired(false));
 
         return comm;
     }

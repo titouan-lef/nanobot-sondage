@@ -1,5 +1,6 @@
 const constante = require("../../variable/constante.js");
 const alphabet = constante.getAlphabet();
+const xHeure = constante.getXHeure();
 
 const objSondage = require("../../objet/sondage.js");
 const objParam = require("../../objet/param.js");
@@ -17,26 +18,26 @@ module.exports =
         return tab;
     },
 
-    creerSonsage: async (interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout) =>
+    creerSonsage: async (interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout, rappel) =>
     {
         // Paramétrage des variables liées au sondage
         let listePropositionValide = getPropositionValide(listeProposition);
         let descriptionSondage = fonction.setDescription(listePropositionValide);
+
+        let minuteur = minuteur(mesure, temps);
+        if (minuteur < xHeure)
+            rappel = false;
         
         let tag = creerTag(role1, role2);
         
         let avertissement = creerAvertissement(montrer);
+
+        let texteAjout = creerTexteAjout(ajout);
         
         let texte;
-        if (tag && avertissement)
-            texte = tag + "\n" + avertissement;
-        else
-        {
-            if (tag)
-                texte = tag;
-            else
-                texte = avertissement;
-        }
+        texte = ajouterTexte(texte, tag);
+        texte = ajouterTexte(texte, avertissement);
+        texte = ajouterTexte(texte, texteAjout);
 
         // Création du design du sondage
         let titreSondage = "Sondage : " + question + " (fin dans : " + finSondageDans(temps, mesure) + ")";
@@ -50,14 +51,14 @@ module.exports =
         let envoi = await interaction.channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
         // Paramètre du sondage
-        let paramSondage = objParam.nouveau(question, temps, mesure, choixMultiple, montrer, ajout, listePropositionValide, tag, texte, designSondage)
+        let paramSondage = objParam.nouveau(question, temps, mesure, choixMultiple, montrer, ajout, rappel, listePropositionValide, minuteur, tag, texte, designSondage)
 
         // Ajout du sondage au tableau
         let sondage = objSondage.nouveau(envoi.id, paramSondage);
         tabSondage.push(sondage);
 
         // Paramétrage de la fin du sondage
-        initFinSondage(interaction, envoi, sondage.param.minuteur);
+        initFinSondage(interaction, envoi, sondage.param.minuteur, sondage.param.raappel, sondage.param.tag);
 
         await interaction.reply({ content: 'Commande réussite', ephemeral: true });
     }
@@ -76,6 +77,22 @@ function getPropositionValide(listeProposition)
     }
 
     return tab;
+}
+
+function minuteur(mesure, temps)
+{
+    switch (mesure)
+    {
+        case "jour":
+            return temps * 1000 * 60 * 60 * 24;
+        case "heure":
+            return temps * 1000 * 60 * 60;
+        case "minute":
+            return temps * 1000 * 60;
+        default:
+            console.log("erreur sur la durée du sondage");
+            return;
+    }
 }
 
 function creerTag(role1, role2)
@@ -99,6 +116,27 @@ function creerAvertissement(montrer)
         return "";
 }
 
+function creerTexteAjout(ajout)
+{
+    if (ajout)
+        return "Vous avez la possibilité de rajouter une proposition en envoyant celle-ci en réponse au sondage";
+    else
+        return "";
+}
+
+function ajouterTexte(texte, texteAAjouter)
+{
+    if (texteAAjouter)
+    {
+        if (texte === undefined)
+            texte = texteAAjouter;
+        else
+            texte += "\n" + texteAAjouter;
+    }
+
+    return texte;
+}
+
 function finSondageDans(temps, mesure)
 {
     if (temps === 0)
@@ -120,8 +158,11 @@ function creerFooter(choixMultiple)
         return "Sondage à choix unique";
 }
 
-function initFinSondage(interaction, message, minuteur)
+async function initFinSondage(interaction, message, minuteur, rappel, tag)
 {
     if (minuteur !== 0)
         setTimeout(() => fonction.finSondage(interaction, message), minuteur);
+    
+    if (rappel)
+        setTimeout(() => fonction.rappel(interaction, tag), minuteur - xHeure / 2);
 }

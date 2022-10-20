@@ -74,6 +74,20 @@ module.exports =
         console.log(tabSondage);
     },
 
+    rappel: async (interaction, tag) =>
+    {
+        let texte;
+
+        if (tag)
+            texte = tag + "\n";
+        else
+            texte = "";
+        
+        texte += "Attention le sondage finit dans une heure !"
+
+        await interaction.channel.send({content: texte});
+    },
+
     creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>
     {
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);

@@ -16,6 +16,7 @@ module.exports = (interaction) =>
 
     const montrer = interaction.options.getBoolean("montrer");
     const ajout = interaction.options.getBoolean("ajout");
+    const rappel = interaction.options.getBoolean("rappel");
     
-    fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout);
+    fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout, rappel);
 };
