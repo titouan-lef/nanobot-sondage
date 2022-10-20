@@ -1,4 +1,4 @@
 module.exports = (bot) => {
-    bot.application.commands.create(bot.commande.sondage());
+    bot.application.commands.create(data);
     console.log("bot ok");
 };
