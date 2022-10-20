@@ -10,6 +10,6 @@ module.exports = (message) =>
         let idSondage = fonction.trouverIndexSondage(idOriginalMessage);
         
         if (idSondage !== -1 && tabSondage[idSondage].param.ajout)
-            require("../fonction/autre/ajoutOption.js").ajoutOption(message.channel, tabSondage[idSondage], message.content);     
+            require("../fonction/autre/ajoutOption.js").ajoutOption(message, tabSondage[idSondage]);     
     }
 };

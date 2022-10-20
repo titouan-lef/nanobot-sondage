@@ -7,8 +7,10 @@ const fonction = require("../utile.js");
 
 module.exports =
 {
-    ajoutOption: async (channel, sondage, proposition) =>
+    ajoutOption: async (messageProposition, sondage) =>
     {
+        let channel = messageProposition.channel;
+        let proposition = messageProposition.content;
         let parametre = sondage.param;
         let propositionValide = parametre.propositionValide;
 
@@ -29,6 +31,8 @@ module.exports =
 
             let tabUser = sondage.tabUtilisateur;
             tabUser.forEach(user => user.tabVote.push(objVote.nouveau(idVote, proposition)));
+
+            messageProposition.delete();
 
             let message = await channel.messages.fetch(sondage.id);
             message.edit({content: texte, embeds: [designSondage], components: tabBouton});
