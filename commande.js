@@ -37,5 +37,25 @@ module.exports = {
         .addBooleanOption(option => option.setName("rappel").setDescription("Envoi un rappel 1h avant la fin du sondage ?").setRequired(false));
 
         return comm;
+    },
+
+    sondage_RDVA: () =>
+    {
+        let comm = new SlashCommandBuilder()
+        .setName("sondage_RDVA")
+        .setDescription("Créer un sondage pour le RDV des artistes");
+
+        // Proposition obligatoire
+        for (let i = 0; i < 5; i++)
+            comm.addStringOption(option => option.setName(alphabet[i].toLowerCase()).setDescription("Proposition " + alphabet[i]).setRequired(true));
+
+        comm.addIntegerOption(option => option.setName("temps").setDescription("Temps avant de révéler le sondage").setRequired(true))
+        .addStringOption(option => option.setName("mesure").setDescription("Mesure liée au temps avant de révéler le sondage").setRequired(true)
+                .addChoices(
+                    { name: "Jour", value: "jour" },
+                    { name: "Heure", value: "heure" },
+                    { name: "Minute", value: "minute" }))
+                    
+        return comm;
     }
 };

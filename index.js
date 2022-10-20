@@ -17,6 +17,7 @@ const bot = new Client({
 const commande = require("./commande.js");
 bot.commande = {};
 bot.commande["sondage"] = commande["sondage"];
+bot.commande["sondage_RDVA"] = commande["sondage_RDVA"];
 
 bot.on("ready", () => require("./evenement/ready.js")(bot));
 bot.on("interactionCreate", (interaction) => require("./evenement/interactionCreate.js")(bot, interaction));
