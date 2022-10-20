@@ -39,10 +39,10 @@ module.exports = {
         return comm;
     },
 
-    sondage_RDVA: () =>
+    sondage_rdva: () =>
     {
         let comm = new SlashCommandBuilder()
-        .setName("sondage_RDVA")
+        .setName("sondage_rdva")
         .setDescription("Créer un sondage pour le RDV des artistes");
 
         // Proposition obligatoire
@@ -55,7 +55,7 @@ module.exports = {
                     { name: "Jour", value: "jour" },
                     { name: "Heure", value: "heure" },
                     { name: "Minute", value: "minute" }))
-                    
+
         return comm;
     }
 };
