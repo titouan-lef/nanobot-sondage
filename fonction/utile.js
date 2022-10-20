@@ -63,14 +63,24 @@ module.exports =
 
     finSondage: (interaction, message) =>
     {
-        message.delete();
+        try {
+            message.delete();
+        } catch (error) {
+            console.log("Le sondage a été supprimé par quelqu'un");
+        }
+
         let i = trouverIndexSondage(message.id);
         let sondage = tabSondage[i];
         let titreFin = "Sondage : " + sondage.param.question + " (Terminé)";
         let description = afficherResultat(message);
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.param.designSondage.data.footer.text);
         interaction.channel.send({content: sondage.param.tag, embeds: [designFinSondage]});
+        
+        for (const [, user] of Object.entries(sondage.tabUtilisateur))
+            console.log(user.id.username);
+        
         tabSondage.splice(i, 1);//Suppression du sondage
+        
         console.log(tabSondage);
     },
 
