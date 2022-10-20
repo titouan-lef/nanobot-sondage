@@ -1,4 +1,6 @@
 module.exports = (bot) => {
-    bot.application.commands.create(data);
+    for (const [, command] of Object.entries(bot.commande))
+        bot.application.commands.create(command());
+
     console.log("bot ok");
 };
