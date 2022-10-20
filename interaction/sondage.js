@@ -15,6 +15,7 @@ module.exports = (interaction) =>
     const role2 = interaction.options.getRole("role2");
 
     const montrer = interaction.options.getBoolean("montrer");
+    const ajout = interaction.options.getBoolean("ajout");
     
-    fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer);
+    fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout);
 };

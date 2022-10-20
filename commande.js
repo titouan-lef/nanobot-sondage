@@ -18,7 +18,7 @@ module.exports = {
                     { name: "Heure", value: "heure" },
                     { name: "Minute", value: "minute" }))
 
-        .addBooleanOption(option => option.setName("choix_multiple").setDescription("Autoriser le choix multiple").setRequired(true));
+        .addBooleanOption(option => option.setName("choix_multiple").setDescription("Autoriser le choix multiple ?").setRequired(true));
         
         // Proposition obligatoire
         for (let i = 0; i < 2; i++)
@@ -31,7 +31,9 @@ module.exports = {
         comm.addRoleOption(option => option.setName("role1").setDescription("Ping le rôle 1 donné").setRequired(false))
         .addRoleOption(option => option.setName("role2").setDescription("Ping le rôle 2 donné").setRequired(false))
         
-        .addBooleanOption(option => option.setName("montrer").setDescription("Montrer qui a voté pour quoi à la fin").setRequired(false));
+        .addBooleanOption(option => option.setName("montrer").setDescription("Montrer qui a voté pour quoi à la fin ?").setRequired(false))
+
+        .addBooleanOption(option => option.setName("ajout").setDescription("Possibilité d'ajouter des options pendant le sondage ?").setRequired(false));
 
         return comm;
     }

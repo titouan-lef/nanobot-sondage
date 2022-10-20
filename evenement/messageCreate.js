@@ -1,5 +1,7 @@
 const fonction = require("../fonction/utile.js");
 
+let tabSondage = require("../../variable/globale.js").getTabSondage();
+
 module.exports = (message) =>
 {
     if (message.type === 19)
@@ -7,7 +9,7 @@ module.exports = (message) =>
         let idOriginalMessage = message.reference.messageId;
         let idSondage = fonction.trouverIndexSondage(idOriginalMessage);
         
-        if (idSondage !== -1)
-            require("../fonction/autre/ajoutOption.js").ajoutOption(message.channel, idSondage, message.content);
+        if (idSondage !== -1 && tabSondage[idSondage].param.ajout)
+            require("../fonction/autre/ajoutOption.js").ajoutOption(message.channel, tabSondage[idSondage], message.content);     
     }
 };

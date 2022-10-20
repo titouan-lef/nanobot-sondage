@@ -1,11 +1,12 @@
 module.exports = {
-    nouveau: (question, temps, mesure, boolChoixMultiple, boolMontrer, listePropositionValide, roles, texte, designSondage) =>
+    nouveau: (question, temps, mesure, boolChoixMultiple, boolMontrer, boolAjout, listePropositionValide, roles, texte, designSondage) =>
     {
         let VMinuteur = minuteur(mesure, temps);
 
         return {question : question,
             choixMultiple : boolChoixMultiple,
             montrer : boolMontrer,
+            ajout : boolAjout,
             propositionValide : listePropositionValide,
             tag : roles,
             texte : texte,

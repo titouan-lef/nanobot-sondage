@@ -1,5 +1,3 @@
-let tabSondage = require("../../variable/globale.js").getTabSondage();
-
 const constante = require("../../variable/constante.js");
 const alphabet = constante.getAlphabet();
 
@@ -9,9 +7,8 @@ const fonction = require("../utile.js");
 
 module.exports =
 {
-    ajoutOption: async (channel, idSondage, proposition) =>
+    ajoutOption: async (channel, sondage, proposition) =>
     {
-        let sondage = tabSondage[idSondage];
         let parametre = sondage.param;
         let propositionValide = parametre.propositionValide;
 
@@ -27,7 +24,7 @@ module.exports =
 
             let tabBouton = fonction.creerTabBouton(propositionValide, parametre.minuteur);
 
-            let idVote = alphabet[propositionValide.lenght-1];
+            let idVote = alphabet[propositionValide.length-1];
             sondage.tabVote.push(objVote.nouveau(idVote, proposition));
 
             let tabUser = sondage.tabUtilisateur;
