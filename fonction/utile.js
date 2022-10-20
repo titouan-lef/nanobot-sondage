@@ -122,7 +122,7 @@ function afficherResultat(message)
         else
             stringVote = " votes";
 
-        description += "`" + vote.id + ")` **" + vote.proposition + "** : " + vote.nbVote + stringVote;
+        description += "**" + vote.proposition + "** : " + vote.nbVote + stringVote;
 
         if (sondage.param.montrer && vote.votant !== "")
             description += " (" + vote.votant + ")";
