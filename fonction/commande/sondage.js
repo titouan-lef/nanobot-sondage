@@ -58,7 +58,7 @@ module.exports =
         tabSondage.push(sondage);
 
         // Paramétrage de la fin du sondage
-        initFinSondage(interaction, envoi, sondage.param.minuteur, sondage.param.rappel, sondage.param.tag);
+        initFinSondage(interaction, envoi, sondage);
 
         await interaction.reply({ content: 'Commande réussite', ephemeral: true });
     }
@@ -158,11 +158,13 @@ function creerFooter(choixMultiple)
         return "Sondage à choix unique";
 }
 
-async function initFinSondage(interaction, message, minuteur, rappel, tag)
+async function initFinSondage(interaction, message, sondage)
 {
+    let minuteur = sondage.param.minuteur;
+
     if (minuteur !== 0)
         setTimeout(() => fonction.finSondage(interaction, message), minuteur);
     
-    if (rappel)
-        setTimeout(() => fonction.rappel(interaction, tag), minuteur - xHeure / 2);
+    if (sondage.param.rappel)
+        setTimeout(() => fonction.rappel(interaction, sondage.param.tag, sondage.param.question), minuteur - xHeure / 2);
 }

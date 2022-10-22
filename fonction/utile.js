@@ -84,7 +84,7 @@ module.exports =
         console.log(tabSondage);
     },
 
-    rappel: async (interaction, tag) =>
+    rappel: async (interaction, tag, question) =>
     {
         let texte;
 
@@ -93,7 +93,7 @@ module.exports =
         else
             texte = "";
         
-        texte += "Attention le sondage finit dans une heure !";
+        texte += 'Attention le sondage "' + question + '" finit dans une heure !';
 
         await interaction.channel.send(texte);
     },
