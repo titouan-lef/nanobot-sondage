@@ -93,9 +93,9 @@ module.exports =
         else
             texte = "";
         
-        texte += "Attention le sondage finit dans une heure !"
+        texte += "Attention le sondage finit dans une heure !";
 
-        await interaction.channel.send({content: texte});
+        await interaction.channel.send(texte);
     },
 
     creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>

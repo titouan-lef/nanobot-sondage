@@ -58,7 +58,7 @@ module.exports =
         tabSondage.push(sondage);
 
         // Paramétrage de la fin du sondage
-        initFinSondage(interaction, envoi, sondage.param.minuteur, sondage.param.raappel, sondage.param.tag);
+        initFinSondage(interaction, envoi, sondage.param.minuteur, sondage.param.rappel, sondage.param.tag);
 
         await interaction.reply({ content: 'Commande réussite', ephemeral: true });
     }
