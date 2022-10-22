@@ -5,7 +5,7 @@ const idBoutonNotif = "boutonNotif";
 const nomBoutonNotif = "Recevoir une notif";
 const idBoutonArreter = "boutonArreter";
 const nomBoutonArreter = "Arrêter le sondage";
-const xHeure = 2 * 1000 * 60/*60*/;
+const xHeure = 2 * 1000 * 60 * 60;
 
 
 module.exports =
