@@ -5,7 +5,7 @@ const election = mongo.Schema({
     id_vote: req.getString(),
     proposition: req.getString(),
     nb_vote: req.getNumber(),
-    votant: req.getString(),
+    votant: req.getStringVide(),
     id_sondage: req.getString()// Clé étrangère
 });
 
