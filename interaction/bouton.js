@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
     switch (interaction.customId)
     {
         case idBoutonNotif:
-            await interaction.user.send(fonction.messageVote(utilisateur._id));
+            await interaction.user.send(fonction.messageVote(utilisateur.id));
             break;
         case idBoutonArreter:
             let sondage = await sondageBDD.trouver(idSondage);
