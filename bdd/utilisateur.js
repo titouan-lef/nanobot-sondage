@@ -31,7 +31,7 @@ module.exports =
         console.log("utilisateur trouvé", JSON.stringify(str));
         str = await schema.findById(cleUtilisateur, 'nom');
         console.log("utilisateur trouvé avec nom", JSON.stringify(str));
-        return await schema.findById(cleUtilisateur, 'nom');
+        return await schema.findById(cleUtilisateur).nom;
     },
 
     supprimerTous: async (idSondage) => {

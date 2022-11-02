@@ -18,6 +18,7 @@ module.exports =
             
             let texte = sondage.texte;
             let designSondage = sondage.design_sondage;
+            console.log("embed avant ajout", JSON.stringify(designSondage));
             
             designSondage.data.description = fonction.setDescription(propositionValide);;
 

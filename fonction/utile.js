@@ -156,14 +156,15 @@ async function calculerNbVote(sondage)
         tabVoteNonNul = await voteBDD.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
         console.log("vote", JSON.stringify(tabVoteNonNul));
 
-        tabVoteNonNul.forEach(async vote => {
+        for (const vote of tabVoteNonNul)
+        {
             if (premierPassage)
                 premierPassage = false;
             else
                 listeUser += ", ";
 
             listeUser += await utilisateurBDD.trouverNom(vote.cle_utilisateur);
-        });
+        };
         console.log("votant", JSON.stringify(listeUser));
 
         tabVote.push({nbVote: tabVoteNonNul.length, nomProposition: nomProposition, listeVotant: listeUser});
@@ -220,9 +221,8 @@ function creerDesignSondage(couleur, titreSondage, descriptionSondage, footer)
 async function supprimerSondage(idSondage)
 {
     let tabCleNomUtilisateur = await utilisateurBDD.trouverTousCle(idSondage);
-    tabCleNomUtilisateur.forEach(async cleUtilisateur => {
+    for (const cleUtilisateur of tabCleNomUtilisateur)
         await voteBDD.supprimerTous(cleUtilisateur._id);
-    });
 
     await utilisateurBDD.supprimerTous(idSondage);
     await sondageBDD.supprimer(idSondage);
