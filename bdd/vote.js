@@ -15,7 +15,7 @@ module.exports =
 
     trouverTous: async (cleUtilisateur) => {
         return await schema.find({
-            _id: cleUtilisateur
+            cle_utilisateur: cleUtilisateur
         });
     },
     

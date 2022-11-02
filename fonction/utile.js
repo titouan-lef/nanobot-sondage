@@ -120,7 +120,7 @@ async function afficherResultat(sondage)
     let stringVote;
     let premierPassage = true;
 
-    sondage.tabVote.forEach(vote => {
+    tabVote.forEach(vote => {
         if (premierPassage)
             premierPassage = false;
         else
@@ -148,7 +148,7 @@ async function calculerNbVote(sondage)
     let tabVoteNonNul;
 
     let tabCleNomUtilisateur = await utilisateurBDD.trouverTousCle(sondage.id_sondage);
-    
+
     for (const [idProposition, nomProposition] of Object.entries(sondage.proposition_valide))
     {
         premierPassage = true;
