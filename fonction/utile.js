@@ -37,6 +37,7 @@ module.exports =
     {
         let tab = [];
         let ligneBouton;
+        let i = 0;
         for (const [idProposition] of Object.entries(listePropositionValide))
         {
             if (i % 5 === 0)
@@ -46,6 +47,7 @@ module.exports =
                 
                 ligneBouton = new ActionRowBuilder();
             }
+            ++i;
             
             ligneBouton.addComponents(
                 new ButtonBuilder()
