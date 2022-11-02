@@ -31,6 +31,10 @@ module.exports =
         return reqString;
     },
 
+    getStringVide: () => {
+        return reqStringVide;
+    },
+
     getNumber: () => {
         return reqNumber;
     },
