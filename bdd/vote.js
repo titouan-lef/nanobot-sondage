@@ -19,10 +19,13 @@ module.exports =
         });
     },
     
-    trouverPropositionTabVote: async (idVote, tabCleUtilisateur) => {
+    trouverPropositionTabVote: async (idVote, tabCleUtilisateurBDD) => {
+        let tabCleUtilisateur = [];
+        tabCleUtilisateurBDD.forEach(cleUtilisateur => tabCleUtilisateur.push(cleUtilisateur._id));
+
         return await schema.find({
             id_vote: idVote,
-            cle_utilisateur: { $in: tabCleUtilisateur._id },
+            cle_utilisateur: { $in: tabCleUtilisateur },
             nb_vote: 1
         });
     },
