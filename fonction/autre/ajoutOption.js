@@ -19,8 +19,7 @@ module.exports =
             let texte = sondage.texte;
             let designSondage = sondage.design_sondage;
             
-            let description = fonction.setDescription(propositionValide);
-            designSondage.setDescription(description);
+            designSondage.data.description = fonction.setDescription(propositionValide);;
 
             let tabBouton = fonction.creerTabBouton(propositionValide, sondage.minuteur);
 
