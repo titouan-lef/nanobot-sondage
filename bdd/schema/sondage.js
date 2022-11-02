@@ -9,8 +9,8 @@ const sondage = mongo.Schema({
     ajout: req.getBoolean(),
     rappel: req.getBoolean(),
     proposition_valide: req.getObject(),
-    tag: req.getString(),
-    texte: req.getString(),
+    tag: req.reqStringVide(),
+    texte: req.reqStringVide(),
     design_sondage: req.getObject(),
     minuteur: req.getNumber()
 });

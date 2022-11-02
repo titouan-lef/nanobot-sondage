@@ -3,6 +3,12 @@ const reqString = {
     required: true
 };
 
+const reqStringVide = {
+    type: String,
+    required: false,
+    set: v => v === '' ? null : v
+};
+
 const reqNumber = {
     type: Number,
     required: true
