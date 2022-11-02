@@ -2,12 +2,9 @@ const constante = require("../../variable/constante.js");
 const alphabet = constante.getAlphabet();
 const xHeure = constante.getXHeure();
 
-const objSondage = require("../../objet/sondage.js");
-const objParam = require("../../objet/param.js");
+const sondageBDD = require("../../bdd/sondage.js");
 
 const fonction = require("../utile.js");
-
-let tabSondage = require("../../variable/globale.js").getTabSondage();
 
 module.exports =
 {
@@ -50,12 +47,8 @@ module.exports =
         // Envoie du sondage dans le channel
         let envoi = await interaction.channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
-        // Paramètre du sondage
-        let paramSondage = objParam.nouveau(question, choixMultiple, montrer, ajout, rappel, listePropositionValide, minuteur, tag, texte, designSondage)
-
-        // Ajout du sondage au tableau
-        let sondage = objSondage.nouveau(envoi.id, paramSondage);
-        tabSondage.push(sondage);
+        // Ajout du sondage à la BDD
+        let sondage = sondageBDD.creer(envoi.id, question, choixMultiple, montrer, ajout, rappel, listePropositionValide, tag, texte, designSondage, minuteur);
 
         // Paramétrage de la fin du sondage
         initFinSondage(interaction, envoi, sondage);
@@ -68,12 +61,12 @@ function getPropositionValide(listeProposition)
 {
     let tab = [];
 
-    for (const element of listeProposition)
+    for(let i = 0; i < listeProposition.length; ++i)
     {
-        if (element === null)
+        if (listeProposition[i] === null)
             break;
         else
-            tab.push(element);
+            tab[alphabet[i]] = listeProposition[i];
     }
 
     return tab;
@@ -160,11 +153,11 @@ function creerFooter(choixMultiple)
 
 async function initFinSondage(interaction, message, sondage)
 {
-    let minuteur = sondage.param.minuteur;
+    let minuteur = sondage.minuteur;
 
     if (minuteur !== 0)
-        setTimeout(() => fonction.finSondage(interaction, message), minuteur);
+        setTimeout(() => fonction.finSondage(interaction, message, sondage), minuteur);
     
-    if (sondage.param.rappel)
-        setTimeout(() => fonction.rappel(interaction, sondage.param.tag, sondage.param.question), minuteur - xHeure / 2);
+    if (sondage.rappel)
+        setTimeout(() => fonction.rappel(interaction, sondage.tag, sondage.question), minuteur - xHeure / 2);
 }

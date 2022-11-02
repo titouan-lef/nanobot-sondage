@@ -3,6 +3,8 @@ const alphabet = constante.getAlphabet();
 
 const objVote = require("../../objet/vote.js");
 
+const voteBDD = require("../../bdd/vote.js");
+
 const fonction = require("../utile.js");
 
 module.exports =
@@ -11,26 +13,20 @@ module.exports =
     {
         let channel = messageProposition.channel;
         let proposition = messageProposition.content;
-        let parametre = sondage.param;
-        let propositionValide = parametre.propositionValide;
+        let propositionValide = sondage.proposition_valide;
+        let nbProposition = propositionValide.length;
 
-        if (propositionValide.length < alphabet.length)
+        if (nbProposition < alphabet.length)
         {
-            propositionValide.push(proposition);
+            propositionValide[alphabet[nbProposition]] = proposition;
             
-            let texte = parametre.texte;
-            let designSondage = parametre.designSondage;
+            let texte = sondage.texte;
+            let designSondage = sondage.designSondage;
             
             let description = fonction.setDescription(propositionValide);
             designSondage.setDescription(description);
 
-            let tabBouton = fonction.creerTabBouton(propositionValide, parametre.minuteur);
-
-            let idVote = alphabet[propositionValide.length-1];
-            sondage.tabVote.push(objVote.nouveau(idVote, proposition));
-
-            let tabUser = sondage.tabUtilisateur;
-            tabUser.forEach(user => user.tabVote.push(objVote.nouveau(idVote, proposition)));
+            let tabBouton = fonction.creerTabBouton(propositionValide, sondage.minuteur);
 
             messageProposition.delete();
 

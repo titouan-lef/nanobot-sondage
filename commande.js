@@ -1,6 +1,6 @@
 const {SlashCommandBuilder} = require("discord.js");
 
-const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"];
+const alphabet = require("./variable/constante.js").getAlphabet();
 
 module.exports = {
     sondage: () =>

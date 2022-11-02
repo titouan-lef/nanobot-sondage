@@ -1,64 +1,55 @@
-module.exports = async (interaction) => { 
-    let tabSondage = require("../variable/globale.js").getTabSondage();
-    const fonction = require("../fonction/element/bouton.js");
-    const utile = require("../fonction/utile.js");
-    const objUser = require("../objet/utilisateur.js");
+const fonction = require("../fonction/element/bouton.js");
+const utile = require("../fonction/utile.js");
 
-    const constante = require("../variable/constante.js");
-    const idBoutonSupprime = constante.getIdBoutonSupprime();
-    const idBoutonNotif = constante.getIdBoutonNotif();
-    const idBoutonArreter = constante.getIdBoutonArreter();
+const constante = require("../variable/constante.js");
+const idBoutonSupprime = constante.getIdBoutonSupprime();
+const idBoutonNotif = constante.getIdBoutonNotif();
+const idBoutonArreter = constante.getIdBoutonArreter();
 
-    let idUser = interaction.user;
-    let user;
-    let sondage;
+const sondageBDD = require("../bdd/sondage.js");
+const utilisateurBDD = require("../bdd/utilisateur.js");
+const voteBDD = require("../bdd/vote.js");
 
-    tabSondage.forEach(sdg => {
-        if (sdg.id === interaction.message.id)
-        {
-            sondage = sdg;
-            return;
-        }
-    });
+module.exports = async (interaction) => {
+    const idSondage = interaction.message.id;
+    const idUtilisateur = interaction.user;
+    const nomUtilisateur = interaction.user.id.username;
 
-    sondage.tabUtilisateur.forEach(utilisateur => {
-        if (utilisateur.id === idUser)
-            user = utilisateur;
-    });
+    let utilisateur = utilisateurBDD.trouver(idSondage, idUtilisateur);
 
-    if (user === undefined)
-    {
-        user = objUser.nouveau(idUser, sondage.tabVote);
-        sondage.tabUtilisateur.push(user);
-    }
+    if (!utilisateur)
+        utilisateur = utilisateurBDD.creer(idUtilisateur, nomUtilisateur, idSondage);
 
     switch (interaction.customId)
     {
         case idBoutonNotif:
-            interaction.user.send(fonction.messageVote(user));
+            interaction.user.send(fonction.messageVote(utilisateur._id));
             break;
         case idBoutonArreter:
             utile.finSondage(interaction, interaction.message);
             break;
         default:
-            if (!sondage.param.choixMultiple || interaction.customId === idBoutonSupprime)
-            {
-                user.tabVote.forEach(vote => {
-                    if (vote.id === interaction.customId)
-                        vote.nbVote = 1;
-                    else
-                        vote.nbVote = 0;
-                });
-            }
+            if (interaction.customId === idBoutonSupprime)
+                voteBDD.supprimerTous(utilisateur._id);
             else
             {
-                user.tabVote.forEach(vote => {
-                    if (vote.id === interaction.customId)
-                    {
-                        vote.nbVote = 1;
-                        return;
-                    }
-                });
+                let sondage = sondageBDD.trouver(idSondage);
+
+                let idProposition = interaction.customId;
+                let nomProposition = sondage.proposition_valide[idProposition];
+
+                if (!sondage.choix_multiple)
+                {
+                    voteBDD.supprimerTous(utilisateur._id);
+                    voteBDD.creer(idProposition, nomProposition, utilisateur._id);
+                }
+                else // Choix multiple possible
+                {
+                    let vote = voteBDD.trouverProposition(utilisateur._id, idProposition);
+
+                    if (!vote) // Si la personnes n'a pas déjà voté pour la proposition
+                        voteBDD.creer(idProposition, nomProposition, utilisateur._id);
+                }
             }
             break;
     }

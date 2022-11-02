@@ -1,15 +1,15 @@
 const fonction = require("../fonction/utile.js");
 
-let tabSondage = require("../variable/globale.js").getTabSondage();
+const sondageBDD = require("../bdd/sondage.js");
 
 module.exports = (message) =>
 {
     if (message.type === 19)
     {
-        let idOriginalMessage = message.reference.messageId;
-        let idSondage = fonction.trouverIndexSondage(idOriginalMessage);
+        let idSondage = message.reference.messageId;
+        let sondage = sondageBDD.trouver(idSondage);
         
-        if (idSondage !== -1 && tabSondage[idSondage].param.ajout)
-            require("../fonction/autre/ajoutOption.js").ajoutOption(message, tabSondage[idSondage]);     
+        if (!sondage && sondage.ajout)
+            require("../fonction/autre/ajoutOption.js").ajoutOption(message, sondage);
     }
 };
