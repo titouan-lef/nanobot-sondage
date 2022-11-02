@@ -48,9 +48,12 @@ module.exports =
         let envoi = await interaction.channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
         // Ajout du sondage à la BDD
+        console.log("etape 1");
         let sondage = sondageBDD.creer(envoi.id, question, choixMultiple, montrer, ajout, rappel, listePropositionValide, tag, texte, designSondage, minuteur);
+        console.log("etape 2");
         let str = JSON.stringify(sondage);
         console.log(str);
+        console.log("etape 3");
 
 
         // Paramétrage de la fin du sondage
