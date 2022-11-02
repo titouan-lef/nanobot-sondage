@@ -28,10 +28,10 @@ module.exports =
 
             let tabBouton = fonction.creerTabBouton(propositionValide, sondage.minuteur);
 
-            messageProposition.delete();
+            await messageProposition.delete();
 
             let message = await channel.messages.fetch(sondage.id);
-            message.edit({content: texte, embeds: [designSondage], components: tabBouton});
+            await message.edit({content: texte, embeds: [designSondage], components: tabBouton});
         }
         else
             console.log("le nombre maximum de proposition est déjà atteint");

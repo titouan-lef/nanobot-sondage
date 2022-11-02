@@ -9,7 +9,6 @@ const idBoutonArreter = constante.getIdBoutonArreter();
 const nomBoutonArreter = constante.getNomBoutonArreter();
 
 const sondageBDD = require("../bdd/sondage.js");
-const electionBDD = require("../bdd/election.js");
 const utilisateurBDD = require("../bdd/utilisateur.js");
 const voteBDD = require("../bdd/vote.js");
 
@@ -27,7 +26,7 @@ module.exports =
             else
                 description = "\n";
     
-            description + "`" + lettre + ")` **" + proposition + "**";
+            description += "`" + lettre + ")` **" + proposition + "**";
         }
 
         return description;
@@ -166,7 +165,6 @@ async function calculerNbVote(sondage)
             listeUser += await utilisateurBDD.trouverNom(vote.cle_utilisateur);
         });
 
-        await electionBDD.creer(idProposition, nomProposition, tabVoteNonNul.length, listeUser, sondage.id_sondage);
         tabVote.push({nbVote: tabVoteNonNul.length, nomProposition: nomProposition, listeVotant: listeUser});
     }
 
@@ -226,6 +224,5 @@ async function supprimerSondage(idSondage)
     });
 
     await utilisateurBDD.supprimerTous(idSondage);
-    await electionBDD.supprimerTous(idSondage);
     await sondageBDD.supprimer(idSondage);
 }
