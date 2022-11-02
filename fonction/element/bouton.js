@@ -1,16 +1,19 @@
 const voteBDD = require("../../bdd/vote.js");
 
 module.exports = {
-    messageVote: async (cleUtilisateur) =>
+    messageVote: async (utilisateur) =>
     {
         let message = "";
 
-        const tabVote = await voteBDD.trouverTous(cleUtilisateur);
-
-        tabVote.forEach(vote => {
-            if (vote.nb_vote === 1)
-                message += "\n" + vote.proposition;
-        })
+        if (utilisateur)
+        {
+            const tabVote = await voteBDD.trouverTous(utilisateur._id);
+    
+            tabVote.forEach(vote => {
+                if (vote.nb_vote === 1)
+                    message += "\n" + vote.proposition;
+            })
+        }
 
         if (message === "")
             return "Vous n'avez pas voté";

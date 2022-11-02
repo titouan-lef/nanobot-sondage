@@ -24,7 +24,7 @@ module.exports =
             if (premierPassage)
                 premierPassage = false;
             else
-                description = "\n";
+                description += "\n";
     
             description += "`" + lettre + ")` **" + proposition + "**";
         }

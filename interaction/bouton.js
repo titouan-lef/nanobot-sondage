@@ -15,15 +15,12 @@ module.exports = async (interaction) => {
     const idUtilisateur = interaction.user.id;
     const nomUtilisateur = interaction.user.username;
 
-    let utilisateur = await utilisateurBDD.trouver(idSondage, idUtilisateur);
-
-    if (!utilisateur)
-        utilisateur = await utilisateurBDD.creer(idUtilisateur, nomUtilisateur, idSondage);
+    let utilisateur = await utilisateurBDD.trouver(idSondage, idUtilisateur);// On cherche l'utilisateur qui a appuyé sur un bouton (celui-ci n'existe peut être pas)
 
     switch (interaction.customId)
     {
         case idBoutonNotif:
-            let message = await fonction.messageVote(utilisateur._id)
+            let message = await fonction.messageVote(utilisateur)
             await interaction.user.send(message);
             break;
         case idBoutonArreter:
@@ -32,15 +29,21 @@ module.exports = async (interaction) => {
             break;
         default:
             if (interaction.customId === idBoutonSupprime)
-                await voteBDD.supprimerTous(utilisateur._id);
+            {
+                if (utilisateur)// Si l'utilisateur existe
+                    await voteBDD.supprimerTous(utilisateur._id);
+            }
             else
             {
+                if (!utilisateur)// Si l'utilisateur n'existe pas
+                    utilisateur = await utilisateurBDD.creer(idUtilisateur, nomUtilisateur, idSondage);
+                
                 let sondage = await sondageBDD.trouver(idSondage);
 
                 let idProposition = interaction.customId;
                 let nomProposition = sondage.proposition_valide[idProposition];
 
-                if (!sondage.choix_multiple)
+                if (!sondage.choix_multiple) // Choix unique
                 {
                     await voteBDD.supprimerTous(utilisateur._id);
                     await voteBDD.creer(idProposition, nomProposition, utilisateur._id);
