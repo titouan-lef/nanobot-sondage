@@ -1,6 +1,6 @@
 const fonction = require("../fonction/commande/sondage.js");
 
-module.exports = (interaction) =>
+module.exports = async (interaction) =>
 {
     // Récupération des variables
     const question = interaction.options.getString("question");
@@ -18,5 +18,5 @@ module.exports = (interaction) =>
     const ajout = (!interaction.options.getBoolean("ajout") ? false : true);
     const rappel = (!interaction.options.getBoolean("rappel") ? false : true);
     
-    fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout, rappel);
+    await fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout, rappel);
 };

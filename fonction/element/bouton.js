@@ -1,11 +1,11 @@
 const voteBDD = require("../../bdd/vote.js");
 
 module.exports = {
-    messageVote: (cleUtilisateur) =>
+    messageVote: async (cleUtilisateur) =>
     {
         let message = "";
 
-        const tabVote = voteBDD.trouverTous(cleUtilisateur);
+        const tabVote = await voteBDD.trouverTous(cleUtilisateur);
 
         tabVote.forEach(vote => {
             if (vote.nb_vote === 1)

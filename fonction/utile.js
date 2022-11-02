@@ -82,11 +82,11 @@ module.exports =
         }
 
         let titreFin = "Sondage : " + sondage.question + " (Terminé)";
-        let description = afficherResultat(sondage);
+        let description = await afficherResultat(sondage);
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.design_sondage.data.footer.text);
         interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
         
-        supprimerSondage(sondage.id_sondage);
+        await supprimerSondage(sondage.id_sondage);
     },
 
     rappel: async (interaction, tag, question) =>
@@ -110,9 +110,9 @@ module.exports =
 };
 
 
-function afficherResultat(sondage)
+async function afficherResultat(sondage)
 {
-    let tabVote = calculerNbVote(sondage);
+    let tabVote = await calculerNbVote(sondage);
     
     triInsertion(tabVote);
 
@@ -140,14 +140,14 @@ function afficherResultat(sondage)
     return description;
 }
 
-function calculerNbVote(sondage)
+async function calculerNbVote(sondage)
 {
     let premierPassage;
     let listeUser;
     let tabVote = [];
     let tabVoteNonNul;
 
-    let tabCleNomUtilisateur = utilisateurBDD.trouverTousCle(sondage.id_sondage);
+    let tabCleNomUtilisateur = await utilisateurBDD.trouverTousCle(sondage.id_sondage);
     console.log("sondage.id_sondage", sondage.id_sondage);
     console.log("utilisateur", tabCleNomUtilisateur);
     console.log("sondage.proposition_valide", sondage.proposition_valide);
@@ -155,18 +155,18 @@ function calculerNbVote(sondage)
     {
         premierPassage = true;
         listeUser = "";
-        tabVoteNonNul = voteBDD.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
+        tabVoteNonNul = await voteBDD.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
 
-        tabVoteNonNul.forEach(vote => {
+        tabVoteNonNul.forEach(async vote => {
             if (premierPassage)
                 premierPassage = false;
             else
                 listeUser += ", ";
 
-            listeUser += utilisateurBDD.trouverNom(vote.cle_utilisateur);
+            listeUser += await utilisateurBDD.trouverNom(vote.cle_utilisateur);
         });
 
-        electionBDD.creer(idProposition, nomProposition, tabVoteNonNul.length, listeUser, sondage.id_sondage);
+        await electionBDD.creer(idProposition, nomProposition, tabVoteNonNul.length, listeUser, sondage.id_sondage);
         tabVote.push({nbVote: tabVoteNonNul.length, nomProposition: nomProposition, listeVotant: listeUser});
     }
 
@@ -218,14 +218,14 @@ function creerDesignSondage(couleur, titreSondage, descriptionSondage, footer)
         .setFooter({text: footer});
 }
 
-function supprimerSondage(idSondage)
+async function supprimerSondage(idSondage)
 {
-    let tabCleNomUtilisateur = utilisateurBDD.trouverTousCle(idSondage);
-    tabCleNomUtilisateur.forEach(cleUtilisateur => {
-        voteBDD.supprimerTous(cleUtilisateur._id);
+    let tabCleNomUtilisateur = await utilisateurBDD.trouverTousCle(idSondage);
+    tabCleNomUtilisateur.forEach(async cleUtilisateur => {
+        await voteBDD.supprimerTous(cleUtilisateur._id);
     });
 
-    utilisateurBDD.supprimerTous(idSondage);
-    electionBDD.supprimerTous(idSondage);
-    sondageBDD.supprimer(idSondage);
+    await utilisateurBDD.supprimerTous(idSondage);
+    await electionBDD.supprimerTous(idSondage);
+    await sondageBDD.supprimer(idSondage);
 }

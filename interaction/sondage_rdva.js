@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const fonction = require("../fonction/commande/sondage.js");
 
-module.exports = (interaction) =>
+module.exports = async (interaction) =>
 {
     // Récupération des variables
     const question = "Vote pour le prochain thème du RDV des artistes";
@@ -20,5 +20,5 @@ module.exports = (interaction) =>
     const ajout = false;
     const rappel = true;
     
-    fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout, rappel);
+    await fonction.creerSonsage(interaction, question, temps, mesure, choixMultiple, listeProposition, role1, role2, montrer, ajout, rappel);
 };

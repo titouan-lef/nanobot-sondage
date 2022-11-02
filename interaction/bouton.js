@@ -15,10 +15,10 @@ module.exports = async (interaction) => {
     const idUtilisateur = interaction.user;
     const nomUtilisateur = interaction.user.id.username;
 
-    let utilisateur = utilisateurBDD.trouver(idSondage, idUtilisateur);
+    let utilisateur = await utilisateurBDD.trouver(idSondage, idUtilisateur);
 
     if (!utilisateur)
-        utilisateur = utilisateurBDD.creer(idUtilisateur, nomUtilisateur, idSondage);
+        utilisateur = await utilisateurBDD.creer(idUtilisateur, nomUtilisateur, idSondage);
 
     switch (interaction.customId)
     {
@@ -26,30 +26,30 @@ module.exports = async (interaction) => {
             interaction.user.send(fonction.messageVote(utilisateur._id));
             break;
         case idBoutonArreter:
-            let sondage = sondageBDD.trouver(idSondage);
+            let sondage = await sondageBDD.trouver(idSondage);
             utile.finSondage(interaction, interaction.message, sondage);
             break;
         default:
             if (interaction.customId === idBoutonSupprime)
-                voteBDD.supprimerTous(utilisateur._id);
+                await voteBDD.supprimerTous(utilisateur._id);
             else
             {
-                let sondage = sondageBDD.trouver(idSondage);
+                let sondage = await sondageBDD.trouver(idSondage);
 
                 let idProposition = interaction.customId;
                 let nomProposition = sondage.proposition_valide[idProposition];
 
                 if (!sondage.choix_multiple)
                 {
-                    voteBDD.supprimerTous(utilisateur._id);
-                    voteBDD.creer(idProposition, nomProposition, utilisateur._id);
+                    await voteBDD.supprimerTous(utilisateur._id);
+                    await voteBDD.creer(idProposition, nomProposition, utilisateur._id);
                 }
                 else // Choix multiple possible
                 {
-                    let vote = voteBDD.trouverProposition(utilisateur._id, idProposition);
+                    let vote = await voteBDD.trouverProposition(utilisateur._id, idProposition);
 
                     if (!vote) // Si la personnes n'a pas déjà voté pour la proposition
-                        voteBDD.creer(idProposition, nomProposition, utilisateur._id);
+                        await voteBDD.creer(idProposition, nomProposition, utilisateur._id);
                 }
             }
             break;

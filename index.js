@@ -19,9 +19,9 @@ bot.commande = {};
 bot.commande["sondage"] = commande["sondage"];
 bot.commande["sondage_rdva"] = commande["sondage_rdva"];
 
-bot.on("ready", () => require("./evenement/ready.js")(bot));
-bot.on("interactionCreate", (interaction) => require("./evenement/interactionCreate.js")(bot, interaction));
-bot.on("messageCreate", (message) => require("./evenement/messageCreate.js")(message));
+bot.on("ready", async () => await require("./evenement/ready.js")(bot));
+bot.on("interactionCreate", async (interaction) => await require("./evenement/interactionCreate.js")(bot, interaction));
+bot.on("messageCreate", async (message) => await require("./evenement/messageCreate.js")(message));
 
 
 /**
