@@ -17,7 +17,9 @@ module.exports =
             minuteur: _minuteur
         };
 
-        return await new schema(sondage).save();
+        await new schema(sondage).save();
+
+        return sondage;
     },
 
     trouver: async (idSondage) => {
