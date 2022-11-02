@@ -49,7 +49,7 @@ module.exports =
 
         // Ajout du sondage à la BDD
         let sondage = sondageBDD.creer(envoi.id, question, choixMultiple, montrer, ajout, rappel, listePropositionValide, tag, texte, designSondage, minuteur);
-        let str = JSON.stringify(sondage, null, 4);
+        let str = JSON.stringify(sondage);
         console.log(str);
 
 

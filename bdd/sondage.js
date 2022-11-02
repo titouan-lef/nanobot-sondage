@@ -19,6 +19,7 @@ module.exports =
 
         await new schema(sondage).save();
 
+        console.log(JSON.stringify(sondage));
         return sondage;
     },
 
