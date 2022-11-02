@@ -164,6 +164,7 @@ async function calculerNbVote(sondage)
 
             listeUser += await utilisateurBDD.trouverNom(vote.cle_utilisateur);
         });
+        console.log("votant", JSON.stringify(listeUser));
 
         tabVote.push({nbVote: tabVoteNonNul.length, nomProposition: nomProposition, listeVotant: listeUser});
     }
