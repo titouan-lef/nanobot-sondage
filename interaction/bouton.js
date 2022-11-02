@@ -12,11 +12,8 @@ const voteBDD = require("../bdd/vote.js");
 
 module.exports = async (interaction) => {
     const idSondage = interaction.message.id;
-    console.log("interaction", JSON.stringify(interaction.user));
-    const idUtilisateur = interaction.user;
-    console.log("idUtilisateur", JSON.stringify(idUtilisateur));
-    const nomUtilisateur = interaction.user.id.username;
-    console.log("nomUtilisateur", JSON.stringify(nomUtilisateur));
+    const idUtilisateur = interaction.user.id;
+    const nomUtilisateur = interaction.user.username;
 
     let utilisateur = await utilisateurBDD.trouver(idSondage, idUtilisateur);
 
