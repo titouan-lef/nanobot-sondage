@@ -49,6 +49,7 @@ module.exports =
 
         // Ajout du sondage à la BDD
         let sondage = sondageBDD.creer(envoi.id, question, choixMultiple, montrer, ajout, rappel, listePropositionValide, tag, texte, designSondage, minuteur);
+        console.log("sondage", sondage);
 
         // Paramétrage de la fin du sondage
         initFinSondage(interaction, envoi, sondage);
