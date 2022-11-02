@@ -31,7 +31,7 @@ module.exports =
 
         let texteAjout = creerTexteAjout(ajout);
         
-        let texte;
+        let texte = "";
         texte = ajouterTexte(texte, tag);
         texte = ajouterTexte(texte, avertissement);
         texte = ajouterTexte(texte, texteAjout);
@@ -90,7 +90,7 @@ function creerMinuteur(mesure, temps)
 
 function creerTag(role1, role2)
 {
-    let message;
+    let message = "";
     if (role1 !== null)
     {
         if (role2 !== null)
@@ -121,7 +121,7 @@ function ajouterTexte(texte, texteAAjouter)
 {
     if (texteAAjouter)
     {
-        if (texte === undefined)
+        if (texte === "")
             texte = texteAAjouter;
         else
             texte += "\n" + texteAAjouter;
