@@ -6,7 +6,6 @@ module.exports = {
         let message = "";
 
         const tabVote = await voteBDD.trouverTous(cleUtilisateur);
-        console.log(JSON.stringify(tabVote));
 
         tabVote.forEach(vote => {
             if (vote.nb_vote === 1)

@@ -84,7 +84,7 @@ module.exports =
         let titreFin = "Sondage : " + sondage.question + " (Terminé)";
         let description = await afficherResultat(sondage);
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.design_sondage.data.footer.text);
-        interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
+        await interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
         
         await supprimerSondage(sondage.id_sondage);
     },
@@ -148,12 +148,14 @@ async function calculerNbVote(sondage)
     let tabVoteNonNul;
 
     let tabCleNomUtilisateur = await utilisateurBDD.trouverTousCle(sondage.id_sondage);
+    console.log("utilisateur", JSON.stringify(tabCleNomUtilisateur));
 
     for (const [idProposition, nomProposition] of Object.entries(sondage.proposition_valide))
     {
         premierPassage = true;
         listeUser = "";
         tabVoteNonNul = await voteBDD.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
+        console.log("vote", JSON.stringify(tabVoteNonNul));
 
         tabVoteNonNul.forEach(async vote => {
             if (premierPassage)
