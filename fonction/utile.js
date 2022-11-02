@@ -148,7 +148,9 @@ function calculerNbVote(sondage)
     let tabVoteNonNul;
 
     let tabCleNomUtilisateur = utilisateurBDD.trouverTousCle(sondage.id_sondage);
-
+    console.log("sondage.id_sondage", sondage.id_sondage);
+    console.log("utilisateur", tabCleNomUtilisateur);
+    console.log("sondage.proposition_valide", sondage.proposition_valide);
     for (const [idProposition, nomProposition] of Object.entries(sondage.proposition_valide))
     {
         premierPassage = true;
