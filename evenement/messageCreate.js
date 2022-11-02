@@ -7,7 +7,7 @@ module.exports = async (message) =>
         let idSondage = message.reference.messageId;
         let sondage = await sondageBDD.trouver(idSondage);
         
-        if (!sondage && sondage.ajout)
+        if (sondage && sondage.ajout)
             await require("../fonction/autre/ajoutOption.js").ajoutOption(message, sondage);
     }
 };

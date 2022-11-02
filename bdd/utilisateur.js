@@ -26,9 +26,7 @@ module.exports =
     },
 
     trouverNom: async (cleUtilisateur) => {
-        return await schema.findOne({
-            _id: cleUtilisateur
-        }, 'nom');
+        return await schema.findById(cleUtilisateur, 'nom');
     },
 
     supprimerTous: async (idSondage) => {
