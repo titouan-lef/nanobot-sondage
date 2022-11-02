@@ -60,7 +60,7 @@ module.exports =
 
 function getPropositionValide(listeProposition)
 {
-    let tab = [];
+    let tab = {};
 
     for(let i = 0; i < listeProposition.length; ++i)
     {
