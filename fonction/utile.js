@@ -39,9 +39,9 @@ module.exports =
         return creerTabBouton(listePropositionValide, temps);
     },
 
-    creerTitre: function (question, finDans)
+    creerTitre: (question, finDans) =>
     {
-        return "Sondage : " + question + " (" + finDans + ")";
+        return creerTitre(question, finDans);
     },
 
     majSondage: async (message, sondage, minuteur) =>
@@ -68,11 +68,11 @@ module.exports =
         
         finDans = "fin dans : " + finDans;
 
-        sondage.design_sondage.data.title = this.creerTitre(sondage.question, finDans);
+        sondage.design_sondage.data.title = creerTitre(sondage.question, finDans);
         sondage.design_sondage.data.timestamp = new Date().toISOString();
         await sondageBDD.updateEmbed(sondage.design_sondage);
 
-        await this.majDesign(message, sondage);
+        await majDesign(message, sondage);
     },
 
     finSondage: async (message, sondage) =>
@@ -83,7 +83,7 @@ module.exports =
             console.log("Le sondage a été supprimé par quelqu'un");
         }
 
-        let titreFin = this.creerTitre(sondage.question, "Terminé");
+        let titreFin = creerTitre(sondage.question, "Terminé");
         let description = await afficherResultat(sondage);
         let footer = await creerFooter(sondage.id_sondage, sondage.choixMultiple);
 
@@ -112,13 +112,9 @@ module.exports =
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
     },
 
-    majDesign: async (message, sondage) =>
+    majDesign: async (couleur, titreSondage, descriptionSondage, footer) =>
     {
-        let tabBouton = creerTabBouton(sondage.proposition_valide, sondage.minuteur);
-        
-        sondage.design_sondage.data.footer.text = await creerFooter(sondage.id_sondage, sondage.choix_multiple);
-
-        await message.edit({content: sondage.texte, embeds: [sondage.design_sondage.data], components: tabBouton});
+        await majDesign(couleur, titreSondage, descriptionSondage, footer);
     },
 
     creerFooter: async (idSondage, choixMultiple) =>
@@ -165,6 +161,11 @@ function creerTabBouton(listePropositionValide, temps)
     tab.push(ligneBouton);
 
     return tab;
+}
+
+function creerTitre (question, finDans)
+{
+    return "Sondage : " + question + " (" + finDans + ")";
 }
 
 async function afficherResultat(sondage)
@@ -271,6 +272,15 @@ function creerDesignSondage(couleur, titreSondage, descriptionSondage, footer)
         .setDescription(descriptionSondage)
         .setTimestamp()
         .setFooter({text: footer});
+}
+
+async function majDesign (message, sondage)
+{
+    let tabBouton = creerTabBouton(sondage.proposition_valide, sondage.minuteur);
+    
+    sondage.design_sondage.data.footer.text = await creerFooter(sondage.id_sondage, sondage.choix_multiple);
+
+    await message.edit({content: sondage.texte, embeds: [sondage.design_sondage.data], components: tabBouton});
 }
 
 async function creerFooter(idSondage, choixMultiple)
