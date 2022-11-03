@@ -40,7 +40,6 @@ module.exports =
         let titreSondage = "Sondage : " + question + " (fin dans : " + finSondageDans(temps, mesure) + ")";
         let footer = creerFooter(choixMultiple);
         const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
-        console.log("embed", JSON.stringify(designSondage));
 
         // Bouton pour voter
         let tabBouton = fonction.creerTabBouton(listePropositionValide, temps);

@@ -26,13 +26,8 @@ module.exports =
     },
 
     trouverNom: async (cleUtilisateur) => {
-        console.log("clé", JSON.stringify(cleUtilisateur));
-        let str = await schema.findById(cleUtilisateur);
-        console.log("utilisateur trouvé", JSON.stringify(str));
-        str = await schema.findById(cleUtilisateur, 'nom');
-        console.log("utilisateur trouvé avec nom", JSON.stringify(str));
-        console.log("utilisateur trouvé avec nom 2", JSON.stringify(str.nom));
-        return str.nom;
+        let utilisateur = await schema.findById(cleUtilisateur, 'nom');
+        return utilisateur.nom;
     },
 
     supprimerTous: async (idSondage) => {
