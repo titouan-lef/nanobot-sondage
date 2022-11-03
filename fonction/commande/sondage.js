@@ -38,7 +38,7 @@ module.exports =
 
         // Création du design du sondage
         let titreSondage = "Sondage : " + question + " (fin dans : " + finSondageDans(temps, mesure) + ")";
-        let footer = await fonction.creerFooter(choixMultiple);
+        let footer = await fonction.creerFooter(-1, choixMultiple);
         const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
 
         // Bouton pour voter

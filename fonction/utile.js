@@ -47,7 +47,7 @@ module.exports =
 
         let titreFin = "Sondage : " + sondage.question + " (Terminé)";
         let description = await afficherResultat(sondage);
-        let footer = await creerFooter(sondage.choixMultiple);
+        let footer = await creerFooter(sondage.id_sondage, sondage.choixMultiple);
 
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, footer);
         await interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
@@ -80,9 +80,9 @@ module.exports =
         await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
     },
 
-    creerFooter: async (choixMultiple) =>
+    creerFooter: async (idSondage, choixMultiple) =>
     {
-        return await creerFooter(choixMultiple);
+        return await creerFooter(idSondage, choixMultiple);
     }
 };
 
@@ -232,9 +232,11 @@ function creerDesignSondage(couleur, titreSondage, descriptionSondage, footer)
         .setFooter({text: footer});
 }
 
-async function creerFooter(choixMultiple)
+async function creerFooter(idSondage, choixMultiple)
 {
-    let nbVotant = await utilisateurBDD.getNbUtilisateur(sondage.id_sondage);
+    let nbVotant = 0;
+    if (idSondage !== -1)
+        nbVotant = await utilisateurBDD.getNbUtilisateur(idSondage);
 
     let footer;
 
