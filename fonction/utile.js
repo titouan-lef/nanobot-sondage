@@ -147,14 +147,12 @@ async function calculerNbVote(sondage)
     let tabVoteNonNul;
 
     let tabCleNomUtilisateur = await utilisateurBDD.trouverTousCle(sondage.id_sondage);
-    console.log("utilisateur", JSON.stringify(tabCleNomUtilisateur));
 
     for (const [idProposition, nomProposition] of Object.entries(sondage.proposition_valide))
     {
         premierPassage = true;
         listeUser = "";
         tabVoteNonNul = await voteBDD.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
-        console.log("vote", JSON.stringify(tabVoteNonNul));
 
         for (const vote of tabVoteNonNul)
         {
@@ -165,7 +163,6 @@ async function calculerNbVote(sondage)
 
             listeUser += await utilisateurBDD.trouverNom(vote.cle_utilisateur);
         };
-        console.log("votant", JSON.stringify(listeUser));
 
         tabVote.push({nbVote: tabVoteNonNul.length, nomProposition: nomProposition, listeVotant: listeUser});
     }
