@@ -36,7 +36,7 @@ module.exports = async (interaction) => {
                     await utilisateurBDD.supprimer(idSondage, idUtilisateur);
 
                     let sondage = await sondageBDD.trouver(idSondage);
-                    await fonction.majNbVotant(interaction, sondage);
+                    await utile.majDesign(interaction.message, sondage);
                 }
             }
             else
@@ -61,7 +61,7 @@ module.exports = async (interaction) => {
                     if (!vote) // Si la personnes n'a pas déjà voté pour la proposition
                         await voteBDD.creer(idProposition, nomProposition, utilisateur._id);
                 }
-                await fonction.majNbVotant(interaction, sondage);
+                await utile.majDesign(interaction.message, sondage);
             }
             break;
     }

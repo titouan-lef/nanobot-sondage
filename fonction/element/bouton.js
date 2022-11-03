@@ -22,14 +22,5 @@ module.exports = {
             return "Vous n'avez pas voté";
         else
             return "Vous avez voté pour :" + message;
-    },
-
-    majNbVotant: async (interaction, sondage) =>
-    {
-        let designSondage = sondage.design_sondage;
-        
-        designSondage.data.footer.text = await fonction.creerFooter(sondage.id_sondage, sondage.choix_multiple);
-
-        await fonction.majDesign(interaction.message, sondage.proposition_valide, sondage.minuteur, sondage.texte, designSondage);
     }
 };

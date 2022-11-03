@@ -74,10 +74,13 @@ module.exports =
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
     },
 
-    majDesign: async (message, propositionValide, minuteur, texte, designSondage) =>
+    majDesign: async (message, sondage) =>
     {
-        let tabBouton = creerTabBouton(propositionValide, minuteur);
-        await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
+        let tabBouton = creerTabBouton(sondage.proposition_valide, sondage.minuteur);
+        
+        sondage.designSondage.data.footer.text = await fonction.creerFooter(sondage.id_sondage, sondage.choix_multiple);
+
+        await message.edit({content: sondage.texte, embeds: [sondage.designSondage.data], components: tabBouton});
     },
 
     creerFooter: async (idSondage, choixMultiple) =>
