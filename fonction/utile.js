@@ -81,7 +81,7 @@ module.exports =
         console.log(JSON.stringify("Design - ", designSondage));
         console.log(JSON.stringify("tab bouton - ", tabBouton));
 
-        await message.edit({content: texte, embeds: [designSondage], components: tabBouton});
+        await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
     },
 
     creerFooter: (choixMultiple, nbVotant) =>
