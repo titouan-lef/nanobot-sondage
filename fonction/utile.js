@@ -76,7 +76,7 @@ module.exports =
     {
         let tabBouton = creerTabBouton(propositionValide, minuteur);
 
-        await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
+        await message.edit({content: texte, embeds: [designSondage], components: tabBouton});
     },
 
     creerFooter: (choixMultiple, nbVotant) =>
