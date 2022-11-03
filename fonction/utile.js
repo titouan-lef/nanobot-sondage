@@ -33,43 +33,8 @@ module.exports =
     },
 
     creerTabBouton: (listePropositionValide, temps) =>
-    {
-        let tab = [];
-        let ligneBouton;
-        let i = 0;
-        for (const [idProposition] of Object.entries(listePropositionValide))
-        {
-            if (i % 5 === 0)
-            {
-                if (i !== 0)
-                    tab.push(ligneBouton);
-                
-                ligneBouton = new ActionRowBuilder();
-            }
-            ++i;
-            
-            ligneBouton.addComponents(
-                new ButtonBuilder()
-                    .setCustomId(idProposition)
-                    .setLabel(idProposition)
-                    .setStyle(ButtonStyle.Primary));
-        }
-        tab.push(ligneBouton);
-    
-        //BOUTON : Bouton pour supprimer son vote et un bouton pour recevoir une notif
-        ligneBouton = creerBoutonSuppEtNotif();
-    
-        //BOUTON : Bouton pour arreter le sondage
-        if (temps === 0)
-            ligneBouton.addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(idBoutonArreter)
-                        .setLabel(nomBoutonArreter)
-                        .setStyle(ButtonStyle.Success));
-    
-        tab.push(ligneBouton);
-    
-        return tab;
+    {    
+        return creerTabBouton(listePropositionValide, temps);
     },
 
     finSondage: async (interaction, message, sondage) =>
@@ -109,7 +74,7 @@ module.exports =
 
     majDesign: async (message, propositionValide, minuteur, texte, designSondage) =>
     {
-        let tabBouton = fonction.creerTabBouton(propositionValide, minuteur);
+        let tabBouton = creerTabBouton(propositionValide, minuteur);
 
         await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
     },
@@ -120,6 +85,45 @@ module.exports =
     }
 };
 
+function creerTabBouton(listePropositionValide, temps)
+{
+    let tab = [];
+    let ligneBouton;
+    let i = 0;
+    for (const [idProposition] of Object.entries(listePropositionValide))
+    {
+        if (i % 5 === 0)
+        {
+            if (i !== 0)
+                tab.push(ligneBouton);
+            
+            ligneBouton = new ActionRowBuilder();
+        }
+        ++i;
+        
+        ligneBouton.addComponents(
+            new ButtonBuilder()
+                .setCustomId(idProposition)
+                .setLabel(idProposition)
+                .setStyle(ButtonStyle.Primary));
+    }
+    tab.push(ligneBouton);
+
+    //BOUTON : Bouton pour supprimer son vote et un bouton pour recevoir une notif
+    ligneBouton = creerBoutonSuppEtNotif();
+
+    //BOUTON : Bouton pour arreter le sondage
+    if (temps === 0)
+        ligneBouton.addComponents(
+                new ButtonBuilder()
+                    .setCustomId(idBoutonArreter)
+                    .setLabel(nomBoutonArreter)
+                    .setStyle(ButtonStyle.Success));
+
+    tab.push(ligneBouton);
+
+    return tab;
+}
 
 async function afficherResultat(sondage)
 {
