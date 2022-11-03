@@ -25,7 +25,7 @@ module.exports =
 
             let message = await channel.messages.fetch(sondage.id_sondage);
 
-            await fonction.majDesign(message, propositionValide, sondage.texte, designSondage);
+            await fonction.majDesign(message, propositionValide,  sondage.minuteur, sondage.texte, designSondage);
 
             await sondageBDD.updatePropositionValideEtEmbed(sondage.id_sondage, propositionValide, designSondage);
         }

@@ -47,7 +47,11 @@ module.exports =
 
         let titreFin = "Sondage : " + sondage.question + " (Terminé)";
         let description = await afficherResultat(sondage);
-        let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, sondage.design_sondage.data.footer.text);
+
+        let nbUtilisateur = await utilisateurBDD.getNbUtilisateur(sondage.id_sondage);
+        let footer = creerFooter(sondage.choixMultiple, nbUtilisateur);
+
+        let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, footer);
         await interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
         
         await supprimerSondage(sondage.id_sondage);
@@ -75,12 +79,6 @@ module.exports =
     majDesign: async (message, propositionValide, minuteur, texte, designSondage) =>
     {
         let tabBouton = creerTabBouton(propositionValide, minuteur);
-
-        console.log(JSON.stringify("Message - ", message));
-        console.log(JSON.stringify("Texte - ", texte));
-        console.log(JSON.stringify("Design - ", designSondage));
-        console.log(JSON.stringify("tab bouton - ", tabBouton));
-
         await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
     },
 
