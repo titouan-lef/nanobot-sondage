@@ -39,7 +39,7 @@ module.exports =
         return creerTabBouton(listePropositionValide, temps);
     },
 
-    creerTitre: (question, finDans) =>
+    creerTitre: function (question, finDans)
     {
         return "Sondage : " + question + " (" + finDans + ")";
     },
