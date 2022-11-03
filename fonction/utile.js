@@ -76,6 +76,11 @@ module.exports =
     {
         let tabBouton = creerTabBouton(propositionValide, minuteur);
 
+        JSON.stringify("Message - ", message);
+        JSON.stringify("Texte - ", texte);
+        JSON.stringify("Design - ", designSondage);
+        JSON.stringify("tab bouton - ", tabBouton);
+
         await message.edit({content: texte, embeds: [designSondage], components: tabBouton});
     },
 
