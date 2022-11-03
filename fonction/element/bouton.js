@@ -1,4 +1,7 @@
+const fonction = require("../utile.js");
+
 const voteBDD = require("../../bdd/vote.js");
+const utilisateurBDD = require("../../bdd/utilisateur.js");
 
 module.exports = {
     messageVote: async (utilisateur) =>
@@ -19,5 +22,16 @@ module.exports = {
             return "Vous n'avez pas voté";
         else
             return "Vous avez voté pour :" + message;
+    },
+
+    majNbVotant: async (interaction, sondage) =>
+    {
+        
+        let nbUtilisateur = await utilisateurBDD.getNbUtilisateur(sondage.id_sondage);
+        let designSondage = sondage.design_sondage;
+        
+        designSondage.data.footer.text = fonction.creerFooter(sondage.choix_multiple, nbUtilisateur);
+
+        await fonction.majDesign(interaction.message, sondage.proposition_valide, sondage.texte, designSondage);
     }
 };

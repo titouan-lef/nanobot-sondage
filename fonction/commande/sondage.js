@@ -38,7 +38,7 @@ module.exports =
 
         // Création du design du sondage
         let titreSondage = "Sondage : " + question + " (fin dans : " + finSondageDans(temps, mesure) + ")";
-        let footer = creerFooter(choixMultiple);
+        let footer = fonction.creerFooter(choixMultiple, 0);
         const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
 
         // Bouton pour voter
@@ -141,14 +141,6 @@ function finSondageDans(temps, mesure)
         else
             return temps + " " + mesure + "s";
     }
-}
-
-function creerFooter(choixMultiple)
-{
-    if (choixMultiple)
-        return "Sondage à choix multiple";
-    else
-        return "Sondage à choix unique";
 }
 
 async function initFinSondage(interaction, message, sondage)

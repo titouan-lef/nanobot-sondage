@@ -105,6 +105,18 @@ module.exports =
     creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>
     {
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
+    },
+
+    majDesign: async (message, propositionValide, minuteur, texte, designSondage) =>
+    {
+        let tabBouton = fonction.creerTabBouton(propositionValide, minuteur);
+
+        await message.edit({content: texte, embeds: [designSondage.data], components: tabBouton});
+    },
+
+    creerFooter: (choixMultiple, nbVotant) =>
+    {
+        return creerFooter(choixMultiple, nbVotant);
     }
 };
 
@@ -213,6 +225,21 @@ function creerDesignSondage(couleur, titreSondage, descriptionSondage, footer)
         .setDescription(descriptionSondage)
         .setTimestamp()
         .setFooter({text: footer});
+}
+
+function creerFooter(choixMultiple, nbVotant)
+{
+    let footer;
+
+    if (choixMultiple)
+        footer =  "Sondage à choix multiple\n";
+    else
+        footer = "Sondage à choix unique\n";
+
+    if (nbVotant <= 1)
+        return footer + nbVotant + " votant";
+    else
+        return footer + nbVotant + " votants";
 }
 
 async function supprimerSondage(idSondage)

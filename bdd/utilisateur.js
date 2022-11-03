@@ -30,8 +30,23 @@ module.exports =
         return utilisateur.nom;
     },
 
+    getNbUtilisateur: async (idSondage) => {
+        let tabUtilisateur = await schema.find({
+            id_sondage: idSondage
+        });
+
+        return tabUtilisateur.length;
+    },
+
     supprimerTous: async (idSondage) => {
         await schema.deleteMany({
+            id_sondage: idSondage
+        });
+    },
+
+    supprimer: async (idSondage, idUtilisateur) => {
+        await schema.deleteOne({
+            id_utilisateur: idUtilisateur,
             id_sondage: idSondage
         });
     }
