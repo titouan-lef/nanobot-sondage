@@ -1,6 +1,7 @@
 const constante = require("../../variable/constante.js");
 const alphabet = constante.getAlphabet();
 const xHeure = constante.getXHeure();
+const tabMinuteur = constante.getTabMinuteur();
 
 const sondageBDD = require("../../bdd/sondage.js");
 
@@ -37,7 +38,8 @@ module.exports =
         texte = ajouterTexte(texte, texteAjout);
 
         // Création du design du sondage
-        let titreSondage = "Sondage : " + question + " (fin dans : " + finSondageDans(temps, mesure) + ")";
+        let finDans = "fin dans : " + finSondageDans(temps, mesure);
+        let titreSondage = fonction.creerTitre(question, finDans);
         let footer = await fonction.creerFooter(-1, choixMultiple);
         const designSondage = fonction.creerDesignSondage("FF0000", titreSondage, descriptionSondage, footer);
 
@@ -51,7 +53,7 @@ module.exports =
         let sondage = await sondageBDD.creer(envoi.id, question, choixMultiple, montrer, ajout, rappel, listePropositionValide, tag, texte, designSondage, minuteur);
 
         // Paramétrage de la fin du sondage
-        initFinSondage(interaction, envoi, sondage);
+        initFinSondage(envoi, sondage);
 
         await interaction.reply({ content: 'Commande réussite', ephemeral: true });
     }
@@ -143,13 +145,23 @@ function finSondageDans(temps, mesure)
     }
 }
 
-async function initFinSondage(interaction, message, sondage)
+function initFinSondage(message, sondage)
 {
     let minuteur = sondage.minuteur;
 
     if (minuteur !== 0)
-        setTimeout(() => fonction.finSondage(interaction, message, sondage), minuteur);
-    
-    if (sondage.rappel)
-        setTimeout(() => fonction.rappel(interaction, sondage.tag, sondage.question), minuteur - xHeure / 2);
+    {
+        setTimeout(() => fonction.finSondage(message, sondage), minuteur);
+        
+        if (sondage.rappel)
+            setTimeout(() => fonction.rappel(message.channel, sondage.tag, sondage.question), minuteur - xHeure / 2);
+        
+        for (let i = 0; i < tabMinuteur.length; i++)
+        {
+            if (minuteur > tabMinuteur[i])
+                setTimeout(async () => await fonction.majSondage(message, sondage, tabMinuteur[i]), minuteur - tabMinuteur[i]);  
+            else
+                break;        
+        }
+    }
 }

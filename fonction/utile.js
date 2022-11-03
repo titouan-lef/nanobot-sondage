@@ -7,6 +7,8 @@ const idBoutonNotif = constante.getIdBoutonNotif();
 const nomBoutonNotif = constante.getNomBoutonNotif();
 const idBoutonArreter = constante.getIdBoutonArreter();
 const nomBoutonArreter = constante.getNomBoutonArreter();
+const uneHeure = constante.getUneHeure();
+const unJour = constante.getUnJour();
 
 const sondageBDD = require("../bdd/sondage.js");
 const utilisateurBDD = require("../bdd/utilisateur.js");
@@ -37,7 +39,43 @@ module.exports =
         return creerTabBouton(listePropositionValide, temps);
     },
 
-    finSondage: async (interaction, message, sondage) =>
+    creerTitre: (question, finDans) =>
+    {
+        return "Sondage : " + question + " (" + finDans + ")";
+    },
+
+    majSondage: async (message, sondage, minuteur) =>
+    {
+        let tempsRestant;
+        let mesure;
+        let finDans;
+
+        if (minuteur < unJour)
+        {
+            mesure = " heure";
+            tempsRestant = minuteur / 1000 / 60 / 60;// Temps restant en heure
+        }
+        else
+        {
+            mesure = " jour";
+            tempsRestant = minuteur / 1000 / 60 / 60 / 24;// Temps restant en jour
+        }
+
+        if (tempsRestant === 1)
+            finDans = tempsRestant + mesure;
+        else
+            finDans = tempsRestant + mesure + "s";
+        
+        finDans = "fin dans : " + finDans;
+
+        sondage.design_sondage.data.title = this.creerTitre(sondage.question, finDans);
+        sondage.design_sondage.data.timestamp = new Date().toISOString();
+        await sondageBDD.updateEmbed(sondage.design_sondage);
+
+        await this.majDesign(message, sondage);
+    },
+
+    finSondage: async (message, sondage) =>
     {
         try {
             await message.delete();
@@ -45,17 +83,17 @@ module.exports =
             console.log("Le sondage a été supprimé par quelqu'un");
         }
 
-        let titreFin = "Sondage : " + sondage.question + " (Terminé)";
+        let titreFin = this.creerTitre(sondage.question, "Terminé");
         let description = await afficherResultat(sondage);
         let footer = await creerFooter(sondage.id_sondage, sondage.choixMultiple);
 
         let designFinSondage = creerDesignSondage("#0000FF", titreFin, description, footer);
-        await interaction.channel.send({content: sondage.tag, embeds: [designFinSondage]});
+        await message.channel.send({content: sondage.tag, embeds: [designFinSondage]});
         
         await supprimerSondage(sondage.id_sondage);
     },
 
-    rappel: async (interaction, tag, question) =>
+    rappel: async (channel, tag, question) =>
     {
         let texte;
 
@@ -66,7 +104,7 @@ module.exports =
         
         texte += 'Attention le sondage "' + question + '" finit dans une heure !';
 
-        await interaction.channel.send(texte);
+        await channel.send(texte);
     },
 
     creerDesignSondage: (couleur, titreSondage, descriptionSondage, footer) =>

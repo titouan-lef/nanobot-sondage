@@ -7,6 +7,17 @@ const idBoutonArreter = "boutonArreter";
 const nomBoutonArreter = "Arrêter le sondage";
 const xHeure = 2 * 1000 * 60 * 60;
 
+const uneHeure = 1000 * 60 * 60;
+const unJour = 24 * uneHeure;
+
+const tabMinuteur = [];
+
+for (let i = 0; i < 23; ++i)
+    tabMinuteur.push((i + 1) * uneHeure);
+
+for (let i = 0; i < 7; ++i)
+    tabMinuteur.push((i + 1) * unJour);
+
 
 module.exports =
 {
@@ -40,5 +51,17 @@ module.exports =
 
     getXHeure: () => {
         return xHeure;
+    },
+
+    getUneHeure: () => {
+        return uneHeure;
+    },
+
+    getUnJour: () => {
+        return unJour;
+    },
+
+    getTabMinuteur: () => {
+        return tabMinuteur;
     }
 };

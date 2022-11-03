@@ -25,7 +25,7 @@ module.exports = async (interaction) => {
             break;
         case idBoutonArreter:
             let sondage = await sondageBDD.trouver(idSondage);
-            utile.finSondage(interaction, interaction.message, sondage);
+            utile.finSondage(interaction.message, sondage);
             break;
         default:
             if (interaction.customId === idBoutonSupprime)

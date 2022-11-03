@@ -35,5 +35,10 @@ module.exports =
     updatePropositionValideEtEmbed: async (idSondage, propositionValide, embed) => {
         await schema.findOneAndUpdate({id_sondage: idSondage},
             {proposition_valide: propositionValide, design_sondage: embed});
+    },
+
+    updateEmbed: async (idSondage, embed) => {
+        await schema.findOneAndUpdate({id_sondage: idSondage},
+            {design_sondage: embed});
     }
 };
