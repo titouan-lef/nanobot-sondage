@@ -26,10 +26,9 @@ module.exports = {
 
     majNbVotant: async (interaction, sondage) =>
     {
-        let nbUtilisateur = await utilisateurBDD.getNbUtilisateur(sondage.id_sondage);
         let designSondage = sondage.design_sondage;
         
-        designSondage.data.footer.text = fonction.creerFooter(sondage.choix_multiple, nbUtilisateur);
+        designSondage.data.footer.text = await fonction.creerFooter(sondage.choix_multiple);
 
         await fonction.majDesign(interaction.message, sondage.proposition_valide, sondage.minuteur, sondage.texte, designSondage);
     }
