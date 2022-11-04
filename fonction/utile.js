@@ -70,7 +70,7 @@ module.exports =
 
         sondage.design_sondage.data.title = creerTitre(sondage.question, finDans);
         sondage.design_sondage.data.timestamp = new Date().toISOString();
-        await sondageBDD.updateEmbed(sondage.design_sondage);
+        await sondageBDD.updateEmbed(sondage.id_sondage, sondage.design_sondage);
 
         await majDesign(message, sondage);
     },
