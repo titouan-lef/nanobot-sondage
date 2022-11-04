@@ -16,8 +16,12 @@ module.exports =
 
         if (nbProposition < alphabet.length)
         {
-            await messageProposition.delete();// Supression du message qui ajoute une proposition
-
+            try {
+                await messageProposition.delete();// Supression du message qui ajoute une proposition
+            } catch (error) {
+                console.log("Le sondage a été supprimé par quelqu'un");
+            }
+            
             propositionValide[alphabet[nbProposition]] = proposition;// Ajout de la nouvelle proposition
 
             let designSondage = sondage.design_sondage;
