@@ -7,7 +7,6 @@ const idBoutonNotif = constante.getIdBoutonNotif();
 const nomBoutonNotif = constante.getNomBoutonNotif();
 const idBoutonArreter = constante.getIdBoutonArreter();
 const nomBoutonArreter = constante.getNomBoutonArreter();
-const uneHeure = constante.getUneHeure();
 const unJour = constante.getUnJour();
 
 const sondageBDD = require("../bdd/sondage.js");

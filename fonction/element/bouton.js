@@ -1,7 +1,4 @@
-const fonction = require("../utile.js");
-
 const voteBDD = require("../../bdd/vote.js");
-const utilisateurBDD = require("../../bdd/utilisateur.js");
 
 module.exports = {
     messageVote: async (utilisateur) =>
