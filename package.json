@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "tsc -p .",
-    "start": "node ./index.js"
+    "start": "ts-node ./index.js"
   },
   "dependencies": {
     "discord.js": "^14.6.0",
