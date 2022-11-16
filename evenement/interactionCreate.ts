@@ -1,5 +1,7 @@
-import { GuildBasedChannel, GuildMember, Interaction, PermissionsBitField } from "discord.js";
+import { ButtonInteraction, ChatInputCommandInteraction, GuildBasedChannel, GuildMember, Interaction, PermissionsBitField } from "discord.js";
 import commande from "../commande";
+import fichierCommande from "../interaction/commande"
+import interactionBouton from "../interaction/bouton"
 
 export default async (interaction: Interaction): Promise<void> =>
 {
@@ -10,11 +12,11 @@ export default async (interaction: Interaction): Promise<void> =>
         && channel.permissionsFor(me).has(PermissionsBitField.Flags.MentionEveryone))
     {
         if (interaction.isCommand() && interaction.commandName in commande)
-            require("../interaction/" + interaction.commandName + ".js")(interaction);
+            fichierCommande[interaction.commandName as keyof typeof fichierCommande](<ChatInputCommandInteraction> interaction);
     }
     else
         console.log("Le bot n'a pas accès au channel");
 
     if (interaction.isButton())
-        require("../interaction/bouton.js")(interaction);
+        interactionBouton(interaction);
 };
