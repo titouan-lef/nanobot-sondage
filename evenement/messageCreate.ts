@@ -2,15 +2,14 @@ import { Message } from "discord.js";
 
 import fonction from "../fonction/autre/reponse";
 
-import { Sondage, SondageBDD } from "../interface/Sondage";
-const sondageBDD = new SondageBDD();
+import { Sondage, ISondage } from "../interface/Sondage";
 
 export default async (message: Message): Promise<void> =>
 {
     if (message.type === 19)
     {
         let idSondage: string = <string> message.reference?.messageId;
-        let sondage: Sondage | null = await sondageBDD.trouver(idSondage);
+        let sondage: ISondage | null = await Sondage.trouver(idSondage);
         
         if (sondage !== null)
         {

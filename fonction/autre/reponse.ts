@@ -6,12 +6,11 @@ const alphabet: string[] = constante.getAlphabet();
 import { EmbedBuilder, Message } from "discord.js";
 import { Proposition } from "../../interface/Proposition";
 
-import { Sondage, SondageBDD } from "../../interface/Sondage";
-const sondageBDD = new SondageBDD();
+import { Sondage, ISondage } from "../../interface/Sondage";
 
 export default
 {
-    forcerArret: async (message: Message, sondage: Sondage): Promise<void> =>
+    forcerArret: async (message: Message, sondage: ISondage): Promise<void> =>
     {
         if (sondage.tag)
             sondage.tag += "\n:warning: Le sondage a été arrêté de force par " + message.author.username;
@@ -29,7 +28,7 @@ export default
         await fonction.finSondage(messageSondage, sondage);
     },
 
-    ajoutOption: async (messageProposition: Message, sondage: Sondage): Promise<void> =>
+    ajoutOption: async (messageProposition: Message, sondage: ISondage): Promise<void> =>
     {
         if (sondage.ajout)
         {
@@ -55,7 +54,7 @@ export default
 
                 await fonction.majDesign(message, sondage);
 
-                await sondageBDD.updatePropositionValideEtEmbed(sondage.id_sondage, propositionValide, designSondage);
+                await Sondage.updatePropositionValideEtEmbed(sondage.id_sondage, propositionValide, designSondage);
             }
             else
                 console.log("le nombre maximum de proposition est déjà atteint");

@@ -1,6 +1,6 @@
 import {EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, ColorResolvable, Message, TextBasedChannel, EmbedFooterOptions} from "discord.js";
 
-import constante from "../variable/constante.js";
+import constante from "../variable/constante";
 const idBoutonSupprime = constante.getIdBoutonSupprime();
 const nomBoutonSupprime = constante.getNomBoutonSupprime();
 const idBoutonNotif = constante.getIdBoutonNotif();
@@ -10,15 +10,12 @@ const nomBoutonArreter = constante.getNomBoutonArreter();
 const unJour = constante.getUnJour();
 
 
-import {Sondage, SondageBDD} from "../interface/Sondage";
-import {Utilisateur, UtilisateurBDD} from "../interface/Utilisateur";
-import {Vote, VoteBDD} from "../interface/Vote";
-const sondageBDD = new SondageBDD();
-const utilisateurBDD = new UtilisateurBDD();
-const voteBDD = new VoteBDD();
+import {Sondage, ISondage} from "../interface/Sondage";
+import {Utilisateur, IUtilisateur} from "../interface/Utilisateur";
+import {Vote, IVote} from "../interface/Vote";
 
-import { Proposition } from "../interface/Proposition.js";
-import { VoteFinal } from "../interface/VoteFinal.js";
+import { Proposition } from "../interface/Proposition";
+import { VoteFinal } from "../interface/VoteFinal";
 
 export default
 {
@@ -50,7 +47,7 @@ export default
         return creerTitre(question, finDans);
     },
 
-    majSondage: async (message: Message, sondage: Sondage, minuteur: number): Promise<void> =>
+    majSondage: async (message: Message, sondage: ISondage, minuteur: number): Promise<void> =>
     {
         let tempsRestant: number;
         let mesure: string;
@@ -78,12 +75,12 @@ export default
             .setTitle(creerTitre(sondage.question, finDans))
             .setTimestamp(new Date());
 
-        await sondageBDD.updateEmbed(sondage.id_sondage, sondage.design_sondage);
+        await Sondage.updateEmbed(sondage.id_sondage, sondage.design_sondage);
 
         await majDesign(message, sondage);
     },
 
-    finSondage: async (message: Message, sondage: Sondage): Promise<void> =>
+    finSondage: async (message: Message, sondage: ISondage): Promise<void> =>
     {
         try {
             await message.delete();
@@ -120,7 +117,7 @@ export default
         return creerDesignSondage(couleur, titreSondage, descriptionSondage, footer);
     },
 
-    majDesign: async(message: Message, sondage: Sondage): Promise<void> =>
+    majDesign: async(message: Message, sondage: ISondage): Promise<void> =>
     {
         await majDesign(message, sondage);
     },
@@ -176,7 +173,7 @@ function creerTitre (question: string, finDans: string): string
     return "Sondage : " + question + " (" + finDans + ")";
 }
 
-async function afficherResultat(sondage: Sondage): Promise<string>
+async function afficherResultat(sondage: ISondage): Promise<string>
 {
     let tabVote: VoteFinal[] = await calculerNbVote(sondage);
     
@@ -206,20 +203,20 @@ async function afficherResultat(sondage: Sondage): Promise<string>
     return description;
 }
 
-async function calculerNbVote(sondage: Sondage): Promise<VoteFinal[]>
+async function calculerNbVote(sondage: ISondage): Promise<VoteFinal[]>
 {
     let premierPassage: boolean;
     let listeUser: string;
     let tabVote: VoteFinal[] = [];
-    let tabVoteNonNul: Vote[];
+    let tabVoteNonNul: IVote[];
 
-    let tabCleNomUtilisateur: Utilisateur[] = await utilisateurBDD.trouverTous(sondage.id_sondage);
+    let tabCleNomUtilisateur: IUtilisateur[] = await Utilisateur.trouverTous(sondage.id_sondage);
 
     for (const [idProposition, nomProposition] of Object.entries(sondage.proposition_valide))
     {
         premierPassage = true;
         listeUser = "";
-        tabVoteNonNul = await voteBDD.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
+        tabVoteNonNul = await Vote.trouverPropositionTabVote(idProposition, tabCleNomUtilisateur);
 
         for (const vote of tabVoteNonNul)
         {
@@ -228,7 +225,7 @@ async function calculerNbVote(sondage: Sondage): Promise<VoteFinal[]>
             else
                 listeUser += ", ";
 
-            listeUser += await utilisateurBDD.trouverNom(vote.cle_utilisateur);
+            listeUser += await Utilisateur.trouverNom(vote.cle_utilisateur);
         }
 
         tabVote.push({nbVote: tabVoteNonNul.length, nomProposition: nomProposition, listeVotant: listeUser});
@@ -283,7 +280,7 @@ function creerDesignSondage(couleur: ColorResolvable, titreSondage: string, desc
         .setFooter(footer);
 }
 
-async function majDesign (message: Message, sondage: Sondage): Promise<void>
+async function majDesign (message: Message, sondage: ISondage): Promise<void>
 {
     let tabBouton: ActionRowBuilder<ButtonBuilder>[] = creerTabBouton(sondage.proposition_valide, sondage.minuteur);
     let footer: EmbedFooterOptions = await creerFooter(sondage.id_sondage, sondage.choix_multiple);
@@ -297,7 +294,7 @@ async function creerFooter(idSondage: string, choixMultiple: boolean): Promise<E
 {
     let nbVotant: number = 0;
     if (idSondage !== "-1")
-        nbVotant = await utilisateurBDD.getNbUtilisateur(idSondage);
+        nbVotant = await Utilisateur.getNbUtilisateur(idSondage);
 
     let footer: EmbedFooterOptions = {text: ""};
 
@@ -316,13 +313,14 @@ async function creerFooter(idSondage: string, choixMultiple: boolean): Promise<E
 
 async function supprimerSondage(idSondage: string): Promise<void>
 {
-    let tabUtilisateur: Utilisateur[] = await utilisateurBDD.trouverTous(idSondage);
+    let tabUtilisateur: IUtilisateur[] = await Utilisateur.trouverTous(idSondage);
     for (const utilisateur of tabUtilisateur)
     {
         if (utilisateur._id !== undefined)
-            await voteBDD.supprimerTous(utilisateur._id.toString());
+            await Vote.supprimerTous(utilisateur._id.toString());
     }
         
-    await utilisateurBDD.supprimerTous(idSondage);
-    await sondageBDD.supprimer(idSondage);
+    await Utilisateur.supprimerTous(idSondage);
+
+    Sondage.supprimer(idSondage);
 }

@@ -1,4 +1,4 @@
-import { ButtonInteraction, ChatInputCommandInteraction, GuildBasedChannel, GuildMember, Interaction, PermissionsBitField } from "discord.js";
+import { ChatInputCommandInteraction, GuildBasedChannel, GuildMember, Interaction, PermissionsBitField } from "discord.js";
 import commande from "../commande";
 import fichierCommande from "../interaction/commande"
 import interactionBouton from "../interaction/bouton"

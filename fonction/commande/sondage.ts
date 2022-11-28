@@ -5,8 +5,7 @@ const alphabet: string[] = constante.getAlphabet();
 const xHeure: number = constante.getXHeure();
 const tabMinuteur: number[] = constante.getTabMinuteur();
 
-import { Sondage, SondageBDD } from "../../interface/Sondage";
-const sondageBDD = new SondageBDD();
+import { Sondage, ISondage } from "../../interface/Sondage";
 
 import { ActionRowBuilder, ButtonBuilder, ChatInputCommandInteraction, EmbedBuilder, EmbedFooterOptions, Message, TextBasedChannel } from "discord.js";
 import { Proposition } from "../../interface/Proposition";
@@ -58,7 +57,7 @@ export default
         let channel: TextBasedChannel = <TextBasedChannel>interaction.channel;
         let envoi: Message = await channel.send({content: texte, embeds: [designSondage], components: tabBouton});
 
-        let sondageAux: Sondage = new SondageBDD({
+        let sondage: ISondage = await new Sondage({
             id_sondage: envoi.id,
             question: question,
             choix_multiple: choixMultiple,
@@ -70,10 +69,7 @@ export default
             texte: texte,
             design_sondage: designSondage,
             minuteur: minuteur
-        });
-
-        // Ajout du sondage à la BDD
-        let sondage: Sondage = await sondageBDD.creer(sondageAux);
+        }).save();
 
         // Paramétrage de la fin du sondage
         initFinSondage(envoi, sondage);
@@ -168,7 +164,7 @@ function finSondageDans(temps: number, mesure: string): string
     }
 }
 
-function initFinSondage(message: Message, sondage: Sondage): void
+function initFinSondage(message: Message, sondage: ISondage): void
 {
     let minuteur = sondage.minuteur;
 

@@ -1,16 +1,15 @@
-import { Utilisateur } from "../../interface/Utilisateur";
-import { Vote, VoteBDD } from "../../interface/Vote";
-const voteBDD = new VoteBDD();
+import { IUtilisateur } from "../../interface/Utilisateur";
+import { Vote, IVote } from "../../interface/Vote";
 
 export default
 {
-    messageVote: async (utilisateur: Utilisateur): Promise<string> =>
+    messageVote: async (utilisateur: IUtilisateur | null): Promise<string> =>
     {
         let message: string = "";
 
-        if (utilisateur._id)
+        if (utilisateur?._id)
         {
-            const tabVote: Vote[] = await voteBDD.trouverTous(utilisateur._id);
+            const tabVote: IVote[] = await Vote.trouverTous(utilisateur._id);
     
             tabVote.forEach(vote => {
                 if (vote.nb_vote === 1)
