@@ -21,7 +21,6 @@ interface VoteModel extends Model<IVote> {
   
 // SCHEMA - Champ
 const schema = new Schema<IVote, VoteModel>({
-    _id: req.getObjectVide(),
     id_vote: req.getString(),
     proposition: req.getString(),
     nb_vote: req.getNumber(),

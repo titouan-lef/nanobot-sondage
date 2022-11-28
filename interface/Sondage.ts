@@ -29,7 +29,6 @@ interface SondageModel extends Model<ISondage> {
   
 // SCHEMA - Champ
 const schema = new Schema<ISondage, SondageModel>({
-    _id: req.getObjectVide(),
     id_sondage: req.getString(),
     question: req.getString(),
     choix_multiple: req.getBoolean(),

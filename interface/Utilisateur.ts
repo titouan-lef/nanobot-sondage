@@ -21,7 +21,6 @@ interface UtilisateurModel extends Model<IUtilisateur> {
   
 // SCHEMA - Champ
 const schema = new Schema<IUtilisateur, UtilisateurModel>({
-    _id: req.getObjectVide(),
     id_utilisateur: req.getString(),
     nom: req.getString(),
     id_sondage: req.getString()// Clé étrangère

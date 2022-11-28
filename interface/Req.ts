@@ -30,11 +30,6 @@ const reqObject: Req = {
     required: true
 };
 
-const reqObjectVide: Req = {
-    type: Object,
-    required: false
-};
-
 
 export default
 {
@@ -56,9 +51,5 @@ export default
 
     getObject: (): const => {
         return reqObject;
-    },
-
-    getObjectVide: (): const => {
-        return reqObjectVide;
     }
 } as const;
