@@ -13,7 +13,7 @@ export interface IUtilisateur {
 interface UtilisateurModel extends Model<IUtilisateur> {
     trouver(idSondage: string, idUser: string): Promise<IUtilisateur | null>,
     trouverTous(idSondage: string): Promise<IUtilisateur[]>,
-    trouverNom(cleUtilisateur: string): Promise<string>,
+    trouverNom(cleUtilisateur: ObjectId): Promise<string>,
     getNbUtilisateur(idSondage: string): Promise<number>,
     supprimerTous(idSondage: string): Promise<Object>,
     supprimer(idSondage: string, idUtilisateur: string): Promise<Object>
@@ -45,7 +45,7 @@ schema.static('trouverTous', async function (idSondage: string): Promise<IUtilis
     }).exec();
 });
 
-schema.static('trouverNom', async function (cleUtilisateur: string): Promise<string>
+schema.static('trouverNom', async function (cleUtilisateur: ObjectId): Promise<string>
 {
     let utilisateur: IUtilisateur | null = await Utilisateur.findById(cleUtilisateur, 'nom').exec();
     return utilisateur ? utilisateur.nom : "";

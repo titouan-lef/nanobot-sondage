@@ -317,7 +317,7 @@ async function supprimerSondage(idSondage: string): Promise<void>
     for (const utilisateur of tabUtilisateur)
     {
         if (utilisateur._id !== undefined)
-            await Vote.supprimerTous(utilisateur._id.toString());
+            await Vote.supprimerTous(utilisateur._id);
     }
         
     await Utilisateur.supprimerTous(idSondage);
