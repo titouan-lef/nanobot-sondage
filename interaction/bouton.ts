@@ -82,6 +82,7 @@ async function interactionVote(interaction: ButtonInteraction, idSondage: string
         await new Vote({
             id_vote: idProposition,
             proposition: nomProposition,
+            nb_vote: 1,
             cle_utilisateur: utilisateur._id
         }).save();
     }
@@ -93,6 +94,7 @@ async function interactionVote(interaction: ButtonInteraction, idSondage: string
             await new Vote({
                 id_vote: idProposition,
                 proposition: nomProposition,
+                nb_vote: 1,
                 cle_utilisateur: utilisateur._id
             }).save();
     }

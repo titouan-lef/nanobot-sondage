@@ -24,7 +24,7 @@ const schema = new Schema<IVote, VoteModel>({
     _id: req.getObjectVide(),
     id_vote: req.getString(),
     proposition: req.getString(),
-    nb_vote: 1,
+    nb_vote: req.getNumber(),
     cle_utilisateur: req.getString()// Clé étrangère
 });
 
