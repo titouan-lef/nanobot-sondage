@@ -80,13 +80,15 @@ export default
         await majDesign(message, sondage);
     },
 
-    finSondage: async (message: Message, sondage: ISondage): Promise<void> =>
+    finSondage: async (message: Message): Promise<void> =>
     {
         try {
             await message.delete();
         } catch (error) {
             console.log("Le sondage a été supprimé par quelqu'un");
         }
+
+        let sondage: ISondage = <ISondage> await Sondage.trouver(message.id);
 
         let titreFin: string = creerTitre(sondage.question, "Terminé");
         let description: string = await afficherResultat(sondage);
@@ -285,7 +287,7 @@ async function majDesign (message: Message, sondage: ISondage): Promise<void>
     let tabBouton: ActionRowBuilder<ButtonBuilder>[] = creerTabBouton(sondage.proposition_valide, sondage.minuteur);
     let footer: EmbedFooterOptions = await creerFooter(sondage.id_sondage, sondage.choix_multiple);
     
-    sondage.design_sondage = EmbedBuilder.from(sondage.design_sondage).setFooter(footer)
+    sondage.design_sondage = EmbedBuilder.from(sondage.design_sondage.data).setFooter(footer);
 
     await message.edit({content: sondage.texte, embeds: [sondage.design_sondage.data], components: tabBouton});
 }

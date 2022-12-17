@@ -46,8 +46,7 @@ async function interactionNotif(interaction: ButtonInteraction, utilisateur: IUt
 
 async function interactionArreter(interaction: ButtonInteraction, idSondage: string): Promise<void>
 {
-    let sondage: ISondage = <ISondage> await Sondage.trouver(idSondage);
-    await utile.finSondage(interaction.message, sondage);
+    await utile.finSondage(interaction.message);
 }
 
 async function interactionSupprimer(interaction: ButtonInteraction, idSondage: string, idUtilisateur: string, utilisateur: IUtilisateur | null): Promise<void>

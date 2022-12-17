@@ -170,7 +170,7 @@ function initFinSondage(message: Message, sondage: ISondage): void
 
     if (minuteur !== 0)
     {
-        setTimeout(async (): Promise<void> => {await fonction.finSondage(message, sondage);}, minuteur);
+        setTimeout(async (): Promise<void> => {await fonction.finSondage(message);}, minuteur);
         
         if (sondage.rappel)
             setTimeout(async (): Promise<void> => {await fonction.rappel(message.channel, sondage.tag, sondage.question);}, minuteur - xHeure / 2);

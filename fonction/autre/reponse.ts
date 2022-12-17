@@ -25,7 +25,7 @@ export default
             console.log("Le message d'arrêt a été supprimé par quelqu'un");
         }
 
-        await fonction.finSondage(messageSondage, sondage);
+        await fonction.finSondage(messageSondage);
     },
 
     ajoutOption: async (messageProposition: Message, sondage: ISondage): Promise<void> =>
